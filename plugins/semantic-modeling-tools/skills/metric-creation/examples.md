@@ -13,7 +13,6 @@ description: Total revenue from order line items
 owner: data-team
 datatype: float
 sql: SUM(order_lines.price * order_lines.quantity)
-rollup: sum
 ```
 
 ## Derived — profit metric (price minus cost)
@@ -29,7 +28,6 @@ description: Revenue minus cost
 owner: data-team
 datatype: float
 sql: SUM(order_lines.price - order_lines.order_cost)
-rollup: sum
 ```
 
 ## Filtered — promotional revenue only
@@ -45,7 +43,6 @@ description: Revenue from promotional items only
 owner: data-team
 datatype: float
 sql: order_lines.revenue FILTER (WHERE parts.type LIKE 'PROMO%')
-rollup: sum
 ```
 
 ## Ratio — promo revenue percentage
@@ -61,7 +58,6 @@ description: Percentage of revenue from promotions
 owner: data-team
 datatype: float
 sql: 100 * order_lines.promo_revenue / order_lines.revenue
-rollup: no_rollup
 ```
 
 ## Count — order count (never use COUNT(\*))
@@ -77,7 +73,6 @@ description: Total number of orders
 owner: data-team
 datatype: number
 sql: COUNT(orders.order_id)
-rollup: sum
 ```
 
 ## Distinct count
@@ -93,7 +88,6 @@ description: Count of distinct customers
 owner: data-team
 datatype: number
 sql: COUNT(DISTINCT orders.customer_id)
-rollup: sum
 ```
 
 ## Fixed Grouping — daily revenue share
@@ -109,7 +103,6 @@ description: Revenue share within each day
 owner: data-team
 datatype: float
 sql: order_lines.revenue / order_lines.revenue GROUP BY (orders.order_date)
-rollup: no_rollup
 ```
 
 ## Nested Aggregation — average daily revenue
@@ -125,7 +118,6 @@ description: Average revenue per day
 owner: data-team
 datatype: float
 sql: AVG(order_lines.revenue GROUP BY (*, orders.order_date))
-rollup: no_rollup
 ```
 
 ## Text summary — churn reasons
@@ -141,7 +133,6 @@ description: AI-generated summary of churn reasons
 owner: data-team
 datatype: string
 sql: AI_SUMMARIZE_AGG(accounts.churn_reason)
-rollup: no_rollup
 ```
 
 ## Update existing metric
@@ -158,7 +149,6 @@ description: Total revenue with discount applied
 owner: data-team
 datatype: float
 sql: SUM(order_lines.price * (1 - order_lines.discount) * order_lines.quantity)
-rollup: sum
 ```
 
 ## Delete metric

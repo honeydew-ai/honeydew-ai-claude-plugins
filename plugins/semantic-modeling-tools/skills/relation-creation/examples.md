@@ -32,7 +32,6 @@ display_name: Orders
 keys:
   - order_id
 key_dataset: orders_source
-hidden: false
 is_time_spine: false
 relations:
   - target_entity: customers
@@ -57,7 +56,6 @@ display_name: Orders
 keys:
   - order_id
 key_dataset: orders_source
-hidden: false
 is_time_spine: false
 relations:
   - target_entity: dim_customers
@@ -82,7 +80,6 @@ display_name: Orders
 keys:
   - order_id
 key_dataset: orders_source
-hidden: false
 is_time_spine: false
 relations:
   - target_entity: customers
@@ -116,7 +113,6 @@ display_name: Orders
 keys:
   - order_id
 key_dataset: orders_source
-hidden: false
 is_time_spine: false
 relations:
   - target_entity: customers

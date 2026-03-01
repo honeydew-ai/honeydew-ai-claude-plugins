@@ -31,28 +31,23 @@ attributes:
     name: order_id
     display_name: Order ID
     datatype: number
-    hidden: false
   - column: ORDER_DATE
     name: order_date
     display_name: Order Date
     datatype: date
     timegrain: day
-    hidden: false
   - column: ORDER_TOTAL
     name: order_total
     display_name: Order Total
     datatype: float
-    hidden: false
   - column: STATUS
     name: status
     display_name: Status
     datatype: string
-    hidden: false
   - column: CUSTOMER_ID
     name: customer_id
     display_name: Customer ID
     datatype: number
-    hidden: false
 ```
 
 ## Custom SQL — filtered entity (active customers only)
@@ -93,12 +88,10 @@ attributes:
     name: customer_id
     display_name: Customer ID
     datatype: number
-    hidden: false
   - column: CUSTOMER_NAME
     name: customer_name
     display_name: Customer Name
     datatype: string
-    hidden: false
 ```
 
 ## Virtual entity — market segment derived from customers
@@ -132,7 +125,6 @@ attributes:
     name: market_segment
     display_name: Market Segment
     datatype: string
-    hidden: false
 ```
 
 ## Time spine — date dimension
@@ -167,19 +159,16 @@ attributes:
     display_name: Date
     datatype: date
     timegrain: day
-    hidden: false
   - column: WEEK_START
     name: week_start
     display_name: Week Start
     datatype: date
     timegrain: week
-    hidden: false
   - column: MONTH_START
     name: month_start
     display_name: Month Start
     datatype: date
     timegrain: month
-    hidden: false
 ```
 
 ## Update existing entity

@@ -35,7 +35,7 @@ Use a metric when:
 - **NEVER use COUNT(\*)** — always use a specific attribute
 - **Use fully qualified column names** — `entity.attribute`, not just `attribute`
 
-See [reference.md](reference.md) for: aggregation functions, filtered aggregations, date handling, text summarization, data types, metric types, rollup options, and format strings.
+See [reference.md](reference.md) for: aggregation functions, filtered aggregations, date handling, text summarization, data types, metric types, and format strings.
 
 ---
 
@@ -58,8 +58,6 @@ owner: <owner_email_or_team>
 datatype: float|number|string|date|timestamp
 sql: |-
   <aggregation SQL expression>
-rollup: sum|min|max|any_value|no_rollup
-hidden: false
 ```
 
 **Required fields:**
@@ -76,9 +74,7 @@ hidden: false
 - `display_name` — human readable name
 - `description` — business context
 - `format_string` — display format (e.g., `$#,##0.00`)
-- `rollup` — aggregation behavior (default: `sum`)
 - `labels` — categorization tags
-- `hidden` — visibility flag
 - `folder` — organizational path
 
 ### update_object (for updates)
@@ -170,7 +166,7 @@ When the user's request contains phrases suggesting a specific granularity, **as
 
 **Rule:** If the request mentions "per X" or "in an X", clarify whether they want:
 
-1. **Fixed Grouping** — `SUM(entity.field) GROUP BY (entity.x_id)` with `rollup: no_rollup`
+1. **Fixed Grouping** — `SUM(entity.field) GROUP BY (entity.x_id)`
 2. **Flexible Aggregation** — `SUM(entity.field)` that users can group by anything later
 
 ---
@@ -179,12 +175,12 @@ When the user's request contains phrases suggesting a specific granularity, **as
 
 Use the `honeydew-docs` MCP tools to search the Honeydew documentation when:
 
-- You need to understand rollup behavior, metric types, or advanced aggregation patterns beyond what `reference.md` covers
+- You need to understand metric types or advanced aggregation patterns beyond what `reference.md` covers
 - The user asks about how metrics behave in BI tools or how context-sensitive aggregation works
 - You need guidance on derived metrics, fixed groupings, or metric composition patterns
 - The user needs **time intelligence** features — period-over-period comparisons, YTD/MTD/QTD calculations, trailing windows, or time-based growth metrics
 
-Search for topics like: "metrics", "rollup", "aggregation", "derived metrics", "fixed grouping", "time intelligence", "period over period", "YTD", "trailing window".
+Search for topics like: "metrics", "aggregation", "derived metrics", "fixed grouping", "time intelligence", "period over period", "YTD", "trailing window".
 
 ---
 
@@ -198,7 +194,6 @@ Search for topics like: "metrics", "rollup", "aggregation", "derived metrics", "
   - ❌ `COUNT(CASE WHEN truck.is_electric THEN truck.truck_id END)`
 - **Name metrics after the business concept**, not the SQL. `gross_margin` is better than `revenue_minus_cogs_divided_by_revenue`.
 - **Use Derived metrics for ratios.** Build numerator and denominator as separate metrics first.
-- **Set `rollup: no_rollup`** (via YAML) for any non-additive metric.
 - **Use fully qualified column names.** `orders.amount`, not just `amount`.
 - **Ignore grouping requests.** Build the aggregation; users add dimensions later.
 
@@ -234,4 +229,3 @@ metrics:
 - **Using window functions** — only aggregations allowed in metrics.
 - **Using joins or subqueries** — simple expressions only.
 - **Unqualified column references** — always prefix with entity name.
-- **Using `rollup: sum` on a ratio or average** — use `no_rollup` for non-additive metrics.

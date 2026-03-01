@@ -54,15 +54,6 @@ Every metric has a data type. Choose based on the aggregation result:
 | **Fixed Grouping**     | Always grouped by a dimension      | `metric GROUP BY (dim)`                |
 | **Nested Aggregation** | Aggregation of grouped aggregation | `AVG(metric GROUP BY (*,dim))`         |
 
-## Rollup Options
-
-| Value         | Meaning                        | Use when                                                   |
-| ------------- | ------------------------------ | ---------------------------------------------------------- |
-| `sum`         | Sum the values                 | Metric is fully additive (revenue, count)                  |
-| `min` / `max` | Take the extreme               | Min/max makes semantic sense                               |
-| `any_value`   | Non-deterministic single value | Arbitrary representative value is acceptable               |
-| `no_rollup`   | Do not aggregate               | Ratios, rates, averages — values that should not be summed |
-
 ## Format Strings
 
 Use `format_string` to control how metric values display in BI tools. Uses spreadsheet-style format expressions (Excel syntax). See https://customformats.com/ to help build expressions.

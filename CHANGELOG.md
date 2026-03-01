@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.3.1] - 2026-03-01
+
+### Changed
+
+- Removed `rollup` and `hidden` fields from all skill documentation, YAML templates, and examples — these fields are not needed for AI-driven modeling
+
 ## [0.3.0] - 2026-02-27
 
 ### Added

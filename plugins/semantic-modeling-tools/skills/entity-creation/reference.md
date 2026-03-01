@@ -12,7 +12,6 @@ description: |-
   <business description>
 owner: <owner_email_or_team> # REQUIRED - set for governance
 labels: []
-hidden: false
 keys:
   - <key_attribute_name>
 key_dataset: <source_dataset_name>
@@ -36,7 +35,6 @@ attributes:
     display_name: <Human Readable Name>
     datatype: bool|date|float|number|string|time|timestamp
     timegrain: hour|day|week|month|quarter|year # date/timestamp only
-    hidden: false
 ```
 
 ## Source Types

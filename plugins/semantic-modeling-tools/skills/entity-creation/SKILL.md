@@ -120,7 +120,6 @@ Search for topics like: "entities", "source types", "granularity", "time spine",
 - **Name entities after the business concept, not the table.** `orders` is better than `fact_orders` or `fct_orders_v2`.
 - **Always expose foreign key columns as attributes.** FK columns (e.g. `customer_id` on orders) are required for Honeydew to resolve relations.
 - **Set `timegrain` on every date/timestamp source column.** Omitting it leads to unexpected aggregation behavior in BI tools.
-- **Use `hidden: true` for raw encoded columns** you plan to clean up with a calculated attribute.
 - **Prefer absolute table paths** (`DB.SCHEMA.TABLE`) to avoid ambiguity across environments.
 - **Convention:** entity = `orders`, dataset = `orders_source`. Keeping names distinct prevents confusion in YAML.
 

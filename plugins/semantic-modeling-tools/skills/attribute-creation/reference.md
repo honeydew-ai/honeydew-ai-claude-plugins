@@ -67,7 +67,6 @@ sql: |-
 format_string: <optional, for numeric or date types>
 timegrain: day|week|month|quarter|year # date/timestamp only
 labels: []
-hidden: false
 folder: <optional folder path>
 ```
 
