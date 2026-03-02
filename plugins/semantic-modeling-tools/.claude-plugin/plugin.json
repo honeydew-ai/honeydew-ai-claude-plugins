@@ -1,7 +1,7 @@
 {
   "name": "semantic-modeling-tools",
   "description": "Tools for semantic modeling with Honeydew AI",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": {
     "name": "Honeydew AI",
     "email": "support@honeydew.ai"

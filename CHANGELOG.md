@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.4.2] - 2026-03-02
+
+### Added
+
+- **PreToolUse hooks** for both plugins — automatically prompt skill loading when Honeydew MCP tools are called
+
 ## [0.4.1] - 2026-03-02
 
 ### Added
