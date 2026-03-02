@@ -144,16 +144,10 @@ See the `honeydew-validate` skill (Entities → "Validating Relations") for:
 **Quick validation:**
 
 1. Verify relation exists using `get_entity` on the source entity, check its relations list.
-2. Test cross-entity query using `preview_data_from_yaml`:
+2. Test cross-entity query using `get_data_from_fields`:
 
-```yaml
-type: perspective
-name: validate_relation
-attributes:
-  - <target_entity>.<attribute>
-metrics:
-  - <source_entity>.<metric>
-```
+- `attributes`: `["<target_entity>.<attribute>"]`
+- `metrics`: `["<source_entity>.<metric>"]`
 
 ---
 

@@ -128,22 +128,16 @@ Search for topics like: "calculated attributes", "attribute types", "multi-entit
 
 See `validation` skill for:
 
-- How to execute attributes via `preview_data_from_yaml` (attributes go in the attributes list)
+- How to execute attributes via `get_data_from_fields` (attributes go in the attributes parameter)
 - Type-specific sanity checks (booleans, dates, buckets, etc.)
 - When to alert the user about suspicious results
 
 **Quick validation:**
 
-Call `preview_data_from_yaml` with:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_attribute
-attributes:
-  - <entity>.<attribute_name>
-metrics:
-  - (optional) include related metrics for cross-validation
-```
+- `attributes`: `["<entity>.<attribute_name>"]`
+- `metrics`: (optional) include related metrics for cross-validation
 
 ---
 

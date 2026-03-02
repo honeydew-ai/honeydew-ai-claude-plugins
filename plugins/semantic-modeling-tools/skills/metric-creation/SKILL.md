@@ -205,21 +205,16 @@ Search for topics like: "metrics", "aggregation", "derived metrics", "fixed grou
 
 See `validation` skill for:
 
-- How to execute metrics via `preview_data_from_yaml`
+- How to execute metrics via `get_data_from_fields`
 - Sanity checks (magnitude, sign, consistency)
 - When to alert the user about suspicious results
 - Cross-validation with related metrics
 
 **Quick validation:**
 
-Call `preview_data_from_yaml` with:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_metric
-metrics:
-  - <entity>.<metric_name>
-```
+- `metrics`: `["<entity>.<metric_name>"]`
 
 ---
 

@@ -90,7 +90,9 @@ Use these MCP tools before creating entities:
 - `list_entities` — List all entities in the model
 - `get_entity` — Get detailed info for a specific entity (attributes, metrics, datasets, relations)
 - `search_model` — Search for entities, fields, or other objects by name
-- `list_tables` — List warehouse tables to find source tables
+- `list_databases` — List all databases in the connected data warehouse
+- `list_schemas` — List schemas in a specific database
+- `list_tables` — List warehouse tables (requires `database` and `schema` parameters)
 - `get_table_info` — Get column details for a specific warehouse table
 
 ---
@@ -132,21 +134,16 @@ Search for topics like: "entities", "source types", "granularity", "time spine",
 See `honeydew-validate` skill for:
 
 - How to verify entity exists via `list_entities`
-- How to verify data flows via `preview_data_from_yaml`
+- How to verify data flows via `get_data_from_fields`
 - Sanity checks (row count, key uniqueness)
 - When to alert the user about issues
 
 **Quick validation:**
 
 1. Verify entity exists using `list_entities`, filter for the new entity name.
-2. Verify data flows using `preview_data_from_yaml` with:
+2. Verify data flows using `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_entity
-metrics:
-  - <entity>.count
-```
+- `metrics`: `["<entity>.count"]`
 
 ---
 

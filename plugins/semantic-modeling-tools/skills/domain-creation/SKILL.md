@@ -128,14 +128,9 @@ Search for topics like: "domains", "governance", "filters", "field selectors", "
 
 1. **Verify domain exists** using `search_model` to find the new domain by name.
 
-2. **Test with a perspective query** — use `preview_data_from_yaml` with the `domain` parameter:
+2. **Test with a query** — use `get_data_from_fields` with the `domain` parameter:
 
-```yaml
-type: perspective
-name: validate_domain
-domain: <domain_name>
-metrics:
-  - <entity>.count
-```
+- `metrics`: `["<entity>.count"]`
+- `domain`: `"<domain_name>"`
 
-Call with `domain: "<domain_name>"` to verify that the domain settings (e.g. filter) apply.
+This verifies that the domain settings (e.g. filter) apply.

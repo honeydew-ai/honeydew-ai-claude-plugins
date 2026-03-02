@@ -22,14 +22,9 @@ Validation ensures:
 
 **Step 1: Execute the metric**
 
-Call `preview_data_from_yaml` with:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_metric
-metrics:
-  - <entity>.<metric_name>
-```
+- `metrics`: `["<entity>.<metric_name>"]`
 
 If the tool call fails (API error, permission denied, timeout), report the error to the user before proceeding. Do not confuse a tool error with suspicious data.
 
@@ -50,15 +45,9 @@ If the new metric is a filtered subset of an existing metric, or a ratio of exis
 - For filtered metrics: query the filtered metric alongside the unfiltered total — the filtered value should be less than or equal to the total.
 - For ratio/derived metrics: query the numerator and denominator independently to confirm they return sensible values before checking the ratio.
 
-Call `preview_data_from_yaml` with both metrics:
+Call `get_data_from_fields` with both metrics:
 
-```yaml
-type: perspective
-name: cross_validate
-metrics:
-  - <entity>.<filtered_metric>
-  - <entity>.<total_metric>
-```
+- `metrics`: `["<entity>.<filtered_metric>", "<entity>.<total_metric>"]`
 
 **Alert user if:**
 
@@ -76,25 +65,14 @@ metrics:
 If the attribute references a related entity (multi-entity attribute), first verify the relation exists using `get_entity` on the source entity.
 If the relation is missing, report that before attempting to query the attribute.
 
-Sample rows — call `preview_data_from_yaml` with:
+Sample rows — call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_attribute
-attributes:
-  - <entity>.<attribute_name>
-```
+- `attributes`: `["<entity>.<attribute_name>"]`
 
-For boolean attributes, check distribution — call `preview_data_from_yaml` with:
+For boolean attributes, check distribution — call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_boolean
-attributes:
-  - <entity>.<boolean_attribute>
-metrics:
-  - <entity>.count
-```
+- `attributes`: `["<entity>.<boolean_attribute>"]`
+- `metrics`: `["<entity>.count"]`
 
 **Step 2: Sanity checks by attribute type**
 
@@ -126,26 +104,13 @@ Use `list_entities` and filter results for the new entity name.
 
 **Step 2: Verify data flows**
 
-Call `preview_data_from_yaml` with:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: validate_entity
-metrics:
-  - <entity>.count
-```
+- `metrics`: `["<entity>.count"]`
 
 Also call with a list of attributes to verify they are accessible:
 
-```yaml
-type: perspective
-name: validate_entity_attributes
-attributes:
-  - <entity>.<attribute1>
-  - <entity>.<attribute2>
-  - <entity>.<attribute3>
-  ...
-```
+- `attributes`: `["<entity>.<attribute1>", "<entity>.<attribute2>", "<entity>.<attribute3>"]`
 
 **Step 3: Sanity checks**
 
@@ -172,16 +137,10 @@ Use `get_entity` on the source entity and check its relations list for the new r
 
 **Step 2: Test the join works**
 
-Call `preview_data_from_yaml` with a cross-entity query:
+Call `get_data_from_fields` with a cross-entity query:
 
-```yaml
-type: perspective
-name: validate_relation
-attributes:
-  - <target_entity>.<attribute>
-metrics:
-  - <source_entity>.<metric>
-```
+- `attributes`: `["<target_entity>.<attribute>"]`
+- `metrics`: `["<source_entity>.<metric>"]`
 
 **Step 3: Sanity checks**
 
@@ -209,15 +168,10 @@ Use `search_model` to find the new domain by name.
 
 **Step 2: Test with a scoped query**
 
-Call `preview_data_from_yaml` with the `domain` parameter to verify entities are accessible and filters apply:
+Call `get_data_from_fields` with the `domain` parameter to verify entities are accessible and filters apply:
 
-```yaml
-type: perspective
-name: validate_domain
-domain: <domain_name>
-metrics:
-  - <entity>.count
-```
+- `metrics`: `["<entity>.count"]`
+- `domain`: `"<domain_name>"`
 
 **Step 3: Verify filters apply**
 
@@ -286,8 +240,8 @@ Do not silently fix issues — always surface findings and ask before making cha
 
 | Object    | Execute With                                  | Key Checks                          |
 | --------- | --------------------------------------------- | ----------------------------------- |
-| Metric    | `preview_data_from_yaml` with metrics list    | Value, magnitude, sign, consistency |
-| Attribute | `preview_data_from_yaml` with attributes list | Range, distribution, NULLs          |
-| Entity    | `list_entities` + `preview_data_from_yaml`    | Exists, has rows, key unique        |
-| Relation  | `get_entity` + cross-entity perspective query | Exists, joins work, no fan-out (validated as part of entity) |
-| Domain    | `search_model` + `preview_data_from_yaml` with domain | Exists, filters apply, fields scoped |
+| Metric    | `get_data_from_fields` with metrics list      | Value, magnitude, sign, consistency |
+| Attribute | `get_data_from_fields` with attributes list   | Range, distribution, NULLs          |
+| Entity    | `list_entities` + `get_data_from_fields`      | Exists, has rows, key unique        |
+| Relation  | `get_entity` + cross-entity field query       | Exists, joins work, no fan-out (validated as part of entity) |
+| Domain    | `search_model` + `get_data_from_fields` with domain | Exists, filters apply, fields scoped |

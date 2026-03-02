@@ -37,13 +37,15 @@ Use the Honeydew MCP tools to interact with the model.
 
 ### Warehouse Discovery
 
-- `list_tables` - List tables in the connected data warehouse (optionally filter by database/schema)
+- `list_databases` - List all databases in the connected data warehouse
+- `list_schemas` - List schemas in a specific database
+- `list_tables` - List tables in the connected data warehouse (requires `database` and `schema` parameters)
 - `get_table_info` - Get column-level details for a specific warehouse table
 
 ### Query Execution
 
-- `preview_data_from_yaml` - Execute a YAML perspective query and return data (supports `limit` and `offset` for pagination)
-- `get_sql_from_yaml` - Generate SQL from a YAML perspective query without executing
+- `get_data_from_fields` - Execute a query from field parameters and return data (supports `limit` and `offset` for pagination)
+- `get_sql_from_fields` - Generate SQL from field parameters without executing
 
 ### AI-Powered Queries
 
@@ -59,7 +61,7 @@ Use the Honeydew MCP tools to interact with the model.
 User Request
     │
     ├─► Exact field names known? Want structured query?
-    │       └─► YES → preview_data_from_yaml (deterministic, YAML perspective)
+    │       └─► YES → get_data_from_fields (deterministic, structured)
     │
     ├─► Simple question in plain English?
     │       └─► YES → ask_question_get_data (natural language → results)
@@ -70,39 +72,29 @@ User Request
 
 | Tool                         | Use When                    | Example Request                               |
 | ---------------------------- | --------------------------- | --------------------------------------------- |
-| `preview_data_from_yaml`     | Known fields, programmatic  | "Get total_revenue by month for 2021"         |
+| `get_data_from_fields`       | Known fields, programmatic  | "Get total_revenue by month for 2021"         |
 | `ask_question_get_data`      | Plain English, single query | "Show me revenue by city last 2 years"        |
 | `ask_deep_analysis_question` | Trends, root cause, "why"   | "Find revenue drops and contributing factors" |
 
 ---
 
-### preview_data_from_yaml (Primary - Known Fields)
+### get_data_from_fields (Primary - Known Fields)
 
-Call `preview_data_from_yaml` with a YAML perspective definition:
+Call `get_data_from_fields` with field parameters:
 
-```yaml
-type: perspective
-name: my_query
-attributes:
-  - order_header.order_year_month
-metrics:
-  - order_header.total_revenue
-filters:
-  - order_header.order_year_month LIKE '2021%'
-order_by:
-  - order_header.order_year_month ASC
-```
-
-Optional parameters:
-
-- `limit` — max rows to return (default: 100)
-- `offset` — rows to skip (for pagination)
+- `attributes`: `["order_header.order_year_month"]`
+- `metrics`: `["order_header.total_revenue"]`
+- `filters`: `["order_header.order_year_month LIKE '2021%'"]`
+- `order_by`: `["order_header.order_year_month ASC"]`
+- `domain`: `"my_domain"` (optional)
+- `limit`: max rows to return (default: 100)
+- `offset`: rows to skip (for pagination)
 
 ---
 
-### get_sql_from_yaml (SQL Preview)
+### get_sql_from_fields (SQL Preview)
 
-Same YAML format as `preview_data_from_yaml`, but returns the generated SQL without executing it.
+Same field parameters as `get_data_from_fields`, but returns the generated SQL without executing it.
 
 ---
 

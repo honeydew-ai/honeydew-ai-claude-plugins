@@ -1,6 +1,6 @@
 ---
 name: query
-description: Use when the user wants to query, analyze, or explore data through the Honeydew semantic layer. Covers structured YAML queries, natural-language questions, and multi-step deep analysis.
+description: Use when the user wants to query, analyze, or explore data through the Honeydew semantic layer. Covers structured queries, natural-language questions, and multi-step deep analysis.
 ---
 
 ## Overview
@@ -9,7 +9,7 @@ Honeydew provides three ways to query data through the semantic layer. Each meth
 
 | Method                    | Tool                                             | Best For                                                 |
 | ------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
-| **Structured YAML query** | `preview_data_from_yaml` / `get_sql_from_yaml`   | You know the exact fields. Deterministic, full control.  |
+| **Structured query**      | `get_data_from_fields` / `get_sql_from_fields`   | You know the exact fields. Deterministic, full control.  |
 | **Natural language**      | `ask_question_get_data` / `ask_question_get_sql` | Plain English question. Single query, fast answer.       |
 | **Deep analysis**         | `ask_deep_analysis_question`                     | Complex, multi-step, "why" questions. Agentic reasoning. |
 
@@ -17,7 +17,7 @@ Honeydew provides three ways to query data through the semantic layer. Each meth
 
 ## When to Use Each Method
 
-### 1. Structured YAML Query (`preview_data_from_yaml` / `get_sql_from_yaml`)
+### 1. Structured Query (`get_data_from_fields` / `get_sql_from_fields`)
 
 **Use when:**
 
@@ -34,10 +34,10 @@ Honeydew provides three ways to query data through the semantic layer. Each meth
 
 **How it works:**
 
-- `preview_data_from_yaml` — executes the query and returns data rows
-- `get_sql_from_yaml` — returns the generated SQL without executing (useful for review, debugging, or handing off to other tools)
+- `get_data_from_fields` — executes the query and returns data rows
+- `get_sql_from_fields` — returns the generated SQL without executing (useful for review, debugging, or handing off to other tools)
 
-Both take the same YAML perspective format.
+Both take the same field parameters.
 
 ### 2. Natural Language (`ask_question_get_data` / `ask_question_get_sql`)
 
@@ -51,7 +51,7 @@ Both take the same YAML perspective format.
 **Do NOT use when:**
 
 - The question involves multiple steps, comparisons across time periods, or root cause analysis
-- You already know the exact fields — use a structured YAML query instead for precision
+- You already know the exact fields — use a structured query instead for precision
 
 **How it works:**
 
@@ -82,11 +82,11 @@ User asks a data question
     │
     ├─► Do you know the exact field names?
     │       │
-    │       ├─► YES → preview_data_from_yaml (structured, deterministic)
+    │       ├─► YES → get_data_from_fields (structured, deterministic)
     │       │
     │       └─► NO → Can you quickly discover them?
     │               │
-    │               ├─► YES → list_entities / get_entity → then preview_data_from_yaml
+    │               ├─► YES → list_entities / get_entity → then get_data_from_fields
     │               │
     │               └─► NO → ask_question_get_data (let Honeydew resolve fields)
     │
@@ -97,38 +97,25 @@ User asks a data question
     │       └─► YES → ask_deep_analysis_question
     │
     └─► Does the user want to see the SQL without running it?
-            ├─► From known fields → get_sql_from_yaml
+            ├─► From known fields → get_sql_from_fields
             └─► From plain English → ask_question_get_sql
 ```
 
 ---
 
-## Method 1: Structured YAML Query
+## Method 1: Structured Query
 
-### Building the YAML Perspective
+### Field Parameters
 
-A perspective query defines what data to retrieve:
+A structured query uses flat field parameters to define what data to retrieve:
 
-```yaml
-type: perspective
-name: <descriptive_query_name>
-attributes:
-  - <entity>.<attribute_name>
-  - <related_entity>.<attribute_name>
-metrics:
-  - <entity>.<metric_name>
-filters:
-  - <entity>.<field> = 'value'
-order_by:
-  - <entity>.<field> ASC|DESC
-```
-
-### Field Reference
-
-- **attributes** — dimensions to group by (columns in the output)
-- **metrics** — aggregated measures (SUM, COUNT, AVG, etc.)
-- **filters** — row-level filters applied before aggregation
-- **order_by** — sort order for results
+- **`attributes`** — dimensions to group by (columns in the output), e.g. `["entity.attribute_name"]`
+- **`metrics`** — aggregated measures (SUM, COUNT, AVG, etc.), e.g. `["entity.metric_name"]`
+- **`filters`** — row-level filters applied before aggregation, e.g. `["entity.field = 'value'"]`
+- **`order_by`** — sort order for results, e.g. `["entity.field ASC"]`
+- **`domain`** — optional domain name for query context
+- **`limit`** — max rows to return (default: 100)
+- **`offset`** — rows to skip (for pagination)
 
 All fields use `entity.field_name` syntax. Cross-entity fields are supported when relations exist.
 
@@ -145,74 +132,47 @@ Before building a query, discover the available fields:
 
 **Simple metric query — total count:**
 
-Call `preview_data_from_yaml` with yaml_text:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: listing_count
-metrics:
-  - detailed_listings.count
-```
+- `metrics`: `["detailed_listings.count"]`
 
 **Dimension breakdown — listings by room type:**
 
-Call `preview_data_from_yaml` with yaml_text:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: listings_by_room_type
-attributes:
-  - detailed_listings.room_type
-metrics:
-  - detailed_listings.count
-order_by:
-  - detailed_listings.count DESC
-```
+- `attributes`: `["detailed_listings.room_type"]`
+- `metrics`: `["detailed_listings.count"]`
+- `order_by`: `["detailed_listings.count DESC"]`
 
 **Filtered query — only entire homes:**
 
-Call `preview_data_from_yaml` with yaml_text:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: entire_home_stats
-attributes:
-  - detailed_listings.neighbourhood_cleansed
-metrics:
-  - detailed_listings.count
-filters:
-  - detailed_listings.room_type = 'Entire home/apt'
-order_by:
-  - detailed_listings.count DESC
-```
+- `attributes`: `["detailed_listings.neighbourhood_cleansed"]`
+- `metrics`: `["detailed_listings.count"]`
+- `filters`: `["detailed_listings.room_type = 'Entire home/apt'"]`
+- `order_by`: `["detailed_listings.count DESC"]`
 
 **Cross-entity query — listings with host info:**
 
-Call `preview_data_from_yaml` with yaml_text:
+Call `get_data_from_fields` with:
 
-```yaml
-type: perspective
-name: listings_by_host_type
-attributes:
-  - detailed_listings.room_type
-  - dim_host.host_is_superhost
-metrics:
-  - detailed_listings.count
-order_by:
-  - detailed_listings.count DESC
-```
+- `attributes`: `["detailed_listings.room_type", "dim_host.host_is_superhost"]`
+- `metrics`: `["detailed_listings.count"]`
+- `order_by`: `["detailed_listings.count DESC"]`
 
 **Pagination — large result sets:**
 
-Call `preview_data_from_yaml` with:
+Call `get_data_from_fields` with:
 
-- `yaml_text`: the perspective YAML
+- `attributes`: (your fields)
+- `metrics`: (your metrics)
 - `limit`: 50 (max rows to return)
 - `offset`: 100 (skip first 100 rows)
 
 **SQL preview only:**
 
-Call `get_sql_from_yaml` with the same YAML to see the generated SQL without executing.
+Call `get_sql_from_fields` with the same field parameters to see the generated SQL without executing.
 
 ### Filter Syntax
 
@@ -315,7 +275,7 @@ For complex tasks, combine methods in sequence:
 
 1. **Discover** — Use `list_entities` / `get_entity` to understand the model
 2. **Explore** — Use `ask_question_get_data` to get a quick feel for the data
-3. **Drill down** — Use `preview_data_from_yaml` for precise, targeted queries
+3. **Drill down** — Use `get_data_from_fields` for precise, targeted queries
 4. **Investigate** — Use `ask_deep_analysis_question` for root cause or trend analysis
 
 ### Example Workflow
@@ -325,7 +285,7 @@ User: "Help me understand pricing patterns for Airbnb listings."
 1. Discover entities: `list_entities` → find `detailed_listings`
 2. Explore fields: `get_entity` for `detailed_listings` → find `price`, `room_type`, `neighbourhood_cleansed`
 3. Quick overview: `ask_question_get_data` → "What is the average listing price by room type?"
-4. Targeted query: `preview_data_from_yaml` → price distribution by neighbourhood for Entire homes only
+4. Targeted query: `get_data_from_fields` → price distribution by neighbourhood for Entire homes only
 5. Deep dive: `ask_deep_analysis_question` → "What factors most influence listing price? Analyze correlations with room type, location, amenities, and reviews."
 
 ---
@@ -345,9 +305,9 @@ Search for topics like: "queries", "perspectives", "dynamic datasets", "paramete
 ## Best Practices
 
 - **Start with discovery** — always check `list_entities` / `get_entity` before building queries, so you reference real fields
-- **Use structured queries for precision** — when you know the fields, `preview_data_from_yaml` gives you full control and reproducible results
+- **Use structured queries for precision** — when you know the fields, `get_data_from_fields` gives you full control and reproducible results
 - **Use natural language for speed** — when the user asks a quick question and you don't need to control every detail
 - **Use deep analysis for insight** — when the question is about "why" or requires investigating multiple dimensions
-- **Paginate large results** — use `limit` and `offset` in `preview_data_from_yaml` to avoid overwhelming output
-- **Show SQL when debugging** — use `get_sql_from_yaml` or `ask_question_get_sql` to inspect the generated query
-- **Reference fields correctly** — always use `entity.field_name` syntax in YAML perspectives
+- **Paginate large results** — use `limit` and `offset` in `get_data_from_fields` to avoid overwhelming output
+- **Show SQL when debugging** — use `get_sql_from_fields` or `ask_question_get_sql` to inspect the generated query
+- **Reference fields correctly** — always use `entity.field_name` syntax in field parameters
