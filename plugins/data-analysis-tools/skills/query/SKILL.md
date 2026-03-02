@@ -302,6 +302,27 @@ Search for topics like: "queries", "perspectives", "dynamic datasets", "paramete
 
 ---
 
+## Tip: Getting Distinct Values for a Field
+
+To retrieve the distinct (unique) values of a field, include it in `attributes` and add a `COUNT` metric for that same field in `metrics`. The metric forces aggregation, which groups by the attribute and returns one row per distinct value.
+
+**Example — distinct room types:**
+
+Call `get_data_from_fields` with:
+
+- `attributes`: `["detailed_listings.room_type"]`
+- `metrics`: `["detailed_listings.count"]`
+
+This returns each unique `room_type` along with its count. The count is a useful bonus — it tells you how common each value is — but the key point is that the query returns **one row per distinct value**.
+
+This pattern is useful for:
+
+- **Exploring filter values** — find out what values exist before writing a filter expression (see the **filtering** skill)
+- **Validating a new attribute** — after creating a calculated attribute, check its distinct output values to confirm the logic is correct (see the **attribute-creation** skill)
+- **Understanding data distribution** — see how data is spread across categories
+
+---
+
 ## Best Practices
 
 - **Start with discovery** — always check `list_entities` / `get_entity` before building queries, so you reference real fields

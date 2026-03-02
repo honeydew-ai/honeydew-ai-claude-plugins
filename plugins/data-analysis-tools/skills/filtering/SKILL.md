@@ -165,6 +165,7 @@ DATE_TRUNC(month, order.order_date) = DATE_TRUNC(month, CURRENT_DATE() - INTERVA
 
 ## Best Practices
 
+- **Discover available values first** — before writing a filter, check the distinct values for a field by querying it as an attribute with a COUNT metric (see the **query** skill's "Getting Distinct Values" tip)
 - **Use `SEARCH` when values are unknown** — avoids hard-coding exact strings
 - **Use `ILIKE` for pattern matching** — case-insensitive, good for partial matches
 - **Cast types explicitly** — prevents silent type coercion errors

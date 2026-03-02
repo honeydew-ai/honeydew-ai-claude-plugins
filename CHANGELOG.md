@@ -2,6 +2,19 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.4.1] - 2026-03-02
+
+### Added
+
+- **Distinct values tip** in the query skill — how to retrieve unique values for a field by combining it as an attribute with a COUNT metric
+- Cross-references from the filtering skill (discover filter values) and attribute-creation skill (validate attribute output) to the new tip
+
+## [0.4.0] - 2026-03-01
+
+### Changed
+
+- Updated MCP tool names and added warehouse discovery tools
+
 ## [0.3.1] - 2026-03-01
 
 ### Changed

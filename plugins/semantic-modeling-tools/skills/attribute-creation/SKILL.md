@@ -132,12 +132,14 @@ See `validation` skill for:
 - Type-specific sanity checks (booleans, dates, buckets, etc.)
 - When to alert the user about suspicious results
 
-**Quick validation:**
+**Quick validation — check distinct values:**
 
 Call `get_data_from_fields` with:
 
 - `attributes`: `["<entity>.<attribute_name>"]`
-- `metrics`: (optional) include related metrics for cross-validation
+- `metrics`: `["<entity>.count"]` — forces aggregation, returning one row per distinct value
+
+This lets you quickly inspect all distinct output values and their frequencies to confirm the attribute logic is correct (see the **query** skill's "Getting Distinct Values" tip for more details).
 
 ---
 
