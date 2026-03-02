@@ -42,4 +42,3 @@ When releasing a new version, update **all** of these files:
 ## CI
 
 - GitHub Actions validates YAML frontmatter on PRs (uses `bun` + `.github/scripts/validate-frontmatter.ts`)
-- SKILL.md must have `description` or `when_to_use` in frontmatter
