@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.5.1] - 2026-03-05
+
+### Changed
+
+- Reuse existing attributes/metrics by reference and avoid `COUNT(*)` across metric-creation, attribute-creation, and query skills
+
 ## [0.5.0] - 2026-03-02
 
 ### Added

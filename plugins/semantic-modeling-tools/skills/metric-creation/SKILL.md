@@ -32,7 +32,11 @@ Use a metric when:
 - **MUST use an aggregation function** — metrics collapse rows
 - **DO NOT use window functions** — only aggregations allowed
 - **DO NOT use joins or subqueries** — simple expressions only
-- **NEVER use COUNT(\*)** — always use a specific attribute
+- **NEVER use COUNT(\*)** — use the entity's built-in count metric (e.g., `entity.count`) if available,
+  or `COUNT(entity.key_field)` on a specific key column.
+- **Reuse existing attributes and metrics** — if a calculated attribute or metric already exists (or you just created one),
+  reference it by name (e.g., `entity.attribute_name`) rather than repeating its SQL logic in the new metric expression.
+  This keeps definitions DRY and ensures changes propagate.
 - **Use fully qualified column names** — `entity.attribute`, not just `attribute`
 
 See [reference.md](reference.md) for: aggregation functions, filtered aggregations, date handling, text summarization, data types, metric types, and format strings.
@@ -192,6 +196,13 @@ Search for topics like: "metrics", "aggregation", "derived metrics", "fixed grou
   - ✅ `COUNT(truck.truck_id) FILTER (WHERE truck.is_electric)`
   - ❌ `SUM(CASE WHEN orders.is_promotional THEN orders.amount ELSE 0 END)`
   - ❌ `COUNT(CASE WHEN truck.is_electric THEN truck.truck_id END)`
+- **Reuse existing objects — don't repeat logic.**
+  If you created a calculated attribute (e.g., `orders.net_price`), reference it in your metric (`SUM(orders.net_price)`)
+  rather than inlining the attribute's SQL expression.
+  Similarly, if a metric already exists, reference it in derived metrics by name (`entity.existing_metric`).
+  This keeps definitions DRY and ensures changes propagate automatically.
+- **Never use COUNT(\*).** Use the entity's built-in count metric (e.g., `entity.count`) when available.
+  Otherwise, use `COUNT(entity.key_field)` on the entity's key column.
 - **Name metrics after the business concept**, not the SQL. `gross_margin` is better than `revenue_minus_cogs_divided_by_revenue`.
 - **Use Derived metrics for ratios.** Build numerator and denominator as separate metrics first.
 - **Use fully qualified column names.** `orders.amount`, not just `amount`.
@@ -220,7 +231,8 @@ Call `get_data_from_fields` with:
 
 ## Common Pitfalls to Avoid
 
-- **Using `COUNT(*)`** — always use a specific attribute like `COUNT(orders.order_id)`.
+- **Using `COUNT(*)`** — use the entity's built-in count metric if available, or `COUNT(entity.key_field)` on a specific key.
+- **Repeating logic that already exists** — if a calculated attribute or metric already exists, reference it by name instead of duplicating its SQL.
 - **Using window functions** — only aggregations allowed in metrics.
 - **Using joins or subqueries** — simple expressions only.
 - **Unqualified column references** — always prefix with entity name.

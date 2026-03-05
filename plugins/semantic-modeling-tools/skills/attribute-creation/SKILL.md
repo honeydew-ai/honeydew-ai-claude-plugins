@@ -112,6 +112,9 @@ Search for topics like: "calculated attributes", "attribute types", "multi-entit
 
 ## Best Practices
 
+- **Reuse existing attributes — don't repeat logic.**
+  If a calculated attribute already exists on the entity (or you just created one), reference it by name
+  (`entity.attribute_name`) rather than inlining its SQL expression. This keeps definitions DRY and ensures changes propagate.
 - **Qualify every column reference** with the entity name: `orders.amount`, not `amount`.
 - **Set timegrain** on every date/timestamp attribute.
 - **Hide raw / intermediate columns** so they don't clutter BI tool field pickers.
@@ -137,7 +140,7 @@ See `validation` skill for:
 Call `get_data_from_fields` with:
 
 - `attributes`: `["<entity>.<attribute_name>"]`
-- `metrics`: `["<entity>.count"]` — forces aggregation, returning one row per distinct value
+- `metrics`: `["COUNT(<entity>.<attribute_name>)"]` — forces aggregation, returning one row per distinct value
 
 This lets you quickly inspect all distinct output values and their frequencies to confirm the attribute logic is correct (see the **query** skill's "Getting Distinct Values" tip for more details).
 
