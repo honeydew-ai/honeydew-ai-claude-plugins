@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.5.2] - 2026-03-05
+
+### Added
+
+- `.cursor/skills/` and `.cortex/skills/` directories with symlinks to all plugin skills
+
 ## [0.5.1] - 2026-03-05
 
 ### Changed

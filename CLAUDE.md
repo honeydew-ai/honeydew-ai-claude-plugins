@@ -28,6 +28,9 @@ When releasing a new version, update **all** of these files:
 ## Skill Conventions
 
 - Each skill lives in `plugins/<plugin>/skills/<skill-name>/`
+- `.cursor/skills/` and `.cortex/skills/` contain relative symlinks to every skill directory.
+  When adding, renaming, or deleting a skill, update the symlinks in both directories
+  (e.g., `ln -s ../../plugins/<plugin>/skills/<skill-name>/ .cursor/skills/<skill-name>`)
 - `SKILL.md` (uppercase) is required — has YAML frontmatter with `name` and `description`
 - Optional companion files: `examples.md`, `reference.md` (lowercase)
 - Field references always use `entity.field_name` (fully qualified)
