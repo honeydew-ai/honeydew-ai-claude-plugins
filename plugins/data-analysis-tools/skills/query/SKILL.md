@@ -7,11 +7,11 @@ description: Use when the user wants to query, analyze, or explore data through 
 
 Honeydew provides three ways to query data through the semantic layer. Each method suits a different situation — pick the right one based on how well you understand the model and how complex the question is.
 
-| Method                    | Tool                                             | Best For                                                 |
-| ------------------------- | ------------------------------------------------ | -------------------------------------------------------- |
-| **Structured query**      | `get_data_from_fields` / `get_sql_from_fields`   | You know the exact fields. Deterministic, full control.  |
-| **Natural language**      | `ask_question_get_data` / `ask_question_get_sql` | Plain English question. Single query, fast answer.       |
-| **Deep analysis**         | `ask_deep_analysis_question`                     | Complex, multi-step, "why" questions. Agentic reasoning. |
+| Method               | Tool                                             | Best For                                                 |
+| -------------------- | ------------------------------------------------ | -------------------------------------------------------- |
+| **Structured query** | `get_data_from_fields` / `get_sql_from_fields`   | You know the exact fields. Deterministic, full control.  |
+| **Natural language** | `ask_question_get_data` / `ask_question_get_sql` | Plain English question. Single query, fast answer.       |
+| **Deep analysis**    | `ask_deep_analysis_question`                     | Complex, multi-step, "why" questions. Agentic reasoning. |
 
 ---
 
@@ -304,14 +304,17 @@ Search for topics like: "queries", "perspectives", "dynamic datasets", "paramete
 
 ## Tip: Getting Distinct Values for a Field
 
-To retrieve the distinct (unique) values of a field, include it in `attributes` and add a `COUNT` metric for that same field in `metrics`. The metric forces aggregation, which groups by the attribute and returns one row per distinct value.
+To retrieve the distinct (unique) values of a field, include it in `attributes` and add a count metric in `metrics`.
+Use the entity's built-in count metric (e.g., `entity.count`) if available, or an ad-hoc count metric using `COUNT(entity.field)`
+on the field whose distinct values you want — never use `COUNT(*)`.
+The metric forces aggregation, which groups by the attribute and returns one row per distinct value.
 
 **Example — distinct room types:**
 
 Call `get_data_from_fields` with:
 
 - `attributes`: `["detailed_listings.room_type"]`
-- `metrics`: `["detailed_listings.count"]`
+- `metrics`: `["COUNT(detailed_listings.room_type)"]`
 
 This returns each unique `room_type` along with its count. The count is a useful bonus — it tells you how common each value is — but the key point is that the query returns **one row per distinct value**.
 
