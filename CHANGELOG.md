@@ -2,6 +2,13 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.5.3] - 2026-03-08
+
+### Added
+
+- **Duplicate values example** in the query skill — find duplicates by fetching a field with its count and filtering on count > 1
+- **Order by count** in the distinct values tip for better data exploration
+
 ## [0.5.2] - 2026-03-05
 
 ### Added

@@ -170,6 +170,17 @@ Call `get_data_from_fields` with:
 - `limit`: 50 (max rows to return)
 - `offset`: 100 (skip first 100 rows)
 
+**Finding duplicate values:**
+
+Call `get_data_from_fields` with:
+
+- `attributes`: `["detailed_listings.host_name"]`
+- `metrics`: `["COUNT(detailed_listings.host_name)"]`
+- `filters`: `["COUNT(detailed_listings.host_name) > 1"]`
+- `order_by`: `["COUNT(detailed_listings.host_name) DESC"]`
+
+This groups by the attribute, counts occurrences, and filters to only rows that appear more than once — surfacing duplicates.
+
 **SQL preview only:**
 
 Call `get_sql_from_fields` with the same field parameters to see the generated SQL without executing.
@@ -315,8 +326,9 @@ Call `get_data_from_fields` with:
 
 - `attributes`: `["detailed_listings.room_type"]`
 - `metrics`: `["COUNT(detailed_listings.room_type)"]`
+- `order_by`: `["COUNT(detailed_listings.room_type) DESC"]`
 
-This returns each unique `room_type` along with its count. The count is a useful bonus — it tells you how common each value is — but the key point is that the query returns **one row per distinct value**.
+This returns each unique `room_type` along with its count, ordered by frequency. The count is a useful bonus — it tells you how common each value is — but the key point is that the query returns **one row per distinct value**.
 
 This pattern is useful for:
 
