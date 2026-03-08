@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.5.5] - 2026-03-08
+
+### Added
+
+- **Domain discovery tools** — document `list_domains` and `get_domain` MCP tools in model-exploration, domain-creation, and query skills
+
 ## [0.5.4] - 2026-03-08
 
 ### Changed
