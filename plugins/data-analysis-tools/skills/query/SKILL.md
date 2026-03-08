@@ -112,7 +112,7 @@ A structured query uses flat field parameters to define what data to retrieve:
 - **`attributes`** — dimensions to group by (columns in the output), e.g. `["entity.attribute_name"]`
 - **`metrics`** — aggregated measures (SUM, COUNT, AVG, etc.), e.g. `["entity.metric_name"]`
 - **`filters`** — row-level filters applied before aggregation, e.g. `["entity.field = 'value'"]`
-- **`order_by`** — sort order for results, e.g. `["entity.field ASC"]`
+- **`order_by`** — sort order for results. **Each entry MUST be a quoted string**, as if it were a SQL identifier — e.g. `["\"entity.field\" ASC"]`. Always wrap the field reference in double quotes inside the string.
 - **`domain`** — optional domain name for query context
 - **`limit`** — max rows to return (default: 100)
 - **`offset`** — rows to skip (for pagination)
@@ -142,7 +142,7 @@ Call `get_data_from_fields` with:
 
 - `attributes`: `["detailed_listings.room_type"]`
 - `metrics`: `["detailed_listings.count"]`
-- `order_by`: `["detailed_listings.count DESC"]`
+- `order_by`: `["\"detailed_listings.count\" DESC"]`
 
 **Filtered query — only entire homes:**
 
@@ -151,7 +151,7 @@ Call `get_data_from_fields` with:
 - `attributes`: `["detailed_listings.neighbourhood_cleansed"]`
 - `metrics`: `["detailed_listings.count"]`
 - `filters`: `["detailed_listings.room_type = 'Entire home/apt'"]`
-- `order_by`: `["detailed_listings.count DESC"]`
+- `order_by`: `["\"detailed_listings.count\" DESC"]`
 
 **Cross-entity query — listings with host info:**
 
@@ -159,7 +159,19 @@ Call `get_data_from_fields` with:
 
 - `attributes`: `["detailed_listings.room_type", "dim_host.host_is_superhost"]`
 - `metrics`: `["detailed_listings.count"]`
-- `order_by`: `["detailed_listings.count DESC"]`
+- `order_by`: `["\"detailed_listings.count\" DESC"]`
+
+**Using aliases — rename fields or ad-hoc expressions:**
+
+You can alias any field or ad-hoc expression using `AS "alias_name"`. This controls the column name in the output.
+
+Call `get_data_from_fields` with:
+
+- `attributes`: `["detailed_listings.room_type"]`
+- `metrics`: `["detailed_listings.count AS \"total_listings\"", "AVG(detailed_listings.price) AS \"avg_price\""]`
+- `order_by`: `["\"total_listings\" DESC"]`
+
+Once aliased, use the alias (not the original expression) in `order_by`.
 
 **Pagination — large result sets:**
 
@@ -177,7 +189,7 @@ Call `get_data_from_fields` with:
 - `attributes`: `["detailed_listings.host_name"]`
 - `metrics`: `["COUNT(detailed_listings.host_name)"]`
 - `filters`: `["COUNT(detailed_listings.host_name) > 1"]`
-- `order_by`: `["COUNT(detailed_listings.host_name) DESC"]`
+- `order_by`: `["\"COUNT(detailed_listings.host_name)\" DESC"]`
 
 This groups by the attribute, counts occurrences, and filters to only rows that appear more than once — surfacing duplicates.
 
@@ -326,7 +338,7 @@ Call `get_data_from_fields` with:
 
 - `attributes`: `["detailed_listings.room_type"]`
 - `metrics`: `["COUNT(detailed_listings.room_type)"]`
-- `order_by`: `["COUNT(detailed_listings.room_type) DESC"]`
+- `order_by`: `["\"COUNT(detailed_listings.room_type)\" DESC"]`
 
 This returns each unique `room_type` along with its count, ordered by frequency. The count is a useful bonus — it tells you how common each value is — but the key point is that the query returns **one row per distinct value**.
 
