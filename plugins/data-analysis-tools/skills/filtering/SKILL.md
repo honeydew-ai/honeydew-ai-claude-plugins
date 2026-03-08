@@ -12,6 +12,7 @@ Filtering restricts which rows contribute to a result. The same expression langu
 | **Perspective query**    | `filters:` block in YAML perspective   | Pre-aggregation    |
 | **Metric aggregation**   | `FILTER (WHERE ...)` on an aggregation | During aggregation |
 | **Attribute expression** | `CASE WHEN ... END` in attribute SQL   | Per-row evaluation |
+| **Metric value filter**  | Metric expression in `filters:` param  | Post-aggregation   |
 
 ---
 
@@ -139,6 +140,38 @@ CASE
   ELSE 'low'
 END
 ```
+
+### 4. Filtering by Metric Values
+
+You can filter on aggregated metric values — the equivalent of SQL's `HAVING` clause. Use the same metric expression in the `filters` parameter of a structured query.
+
+**Example — only groups with more than 10 listings:**
+
+Call `get_data_from_fields` with:
+
+- `attributes`: `["detailed_listings.neighbourhood_cleansed"]`
+- `metrics`: `["detailed_listings.count"]`
+- `filters`: `["detailed_listings.count > 10"]`
+- `order_by`: `["detailed_listings.count DESC"]`
+
+**Example — find duplicate values (count > 1):**
+
+Call `get_data_from_fields` with:
+
+- `attributes`: `["detailed_listings.host_name"]`
+- `metrics`: `["COUNT(detailed_listings.host_name)"]`
+- `filters`: `["COUNT(detailed_listings.host_name) > 1"]`
+- `order_by`: `["COUNT(detailed_listings.host_name) DESC"]`
+
+**Example — high-revenue categories only:**
+
+Call `get_data_from_fields` with:
+
+- `attributes`: `["orders.category"]`
+- `metrics`: `["orders.total_revenue"]`
+- `filters`: `["orders.total_revenue > 10000"]`
+
+Metric filters work with both named metrics (e.g., `entity.metric_name`) and ad-hoc aggregations (e.g., `COUNT(entity.field)`). They are applied **after** aggregation.
 
 ---
 
