@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.5.4] - 2026-03-08
+
+### Changed
+
+- **order_by quoted strings** — all `order_by` field references now use double-quoted strings (SQL identifier style) across query, filtering, and model-exploration skills
+
 ## [0.5.3] - 2026-03-08
 
 ### Added
