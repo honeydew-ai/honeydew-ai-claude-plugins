@@ -8,6 +8,7 @@ All notable changes to the Honeydew AI Plugins for Coding Agents are documented 
 
 - **Duplicate values example** in the query skill — find duplicates by fetching a field with its count and filtering on count > 1
 - **Order by count** in the distinct values tip for better data exploration
+- **Metric value filtering** section in the filtering skill — filtering on aggregated values (post-aggregation), with examples in `examples.md`
 
 ## [0.5.2] - 2026-03-05
 
