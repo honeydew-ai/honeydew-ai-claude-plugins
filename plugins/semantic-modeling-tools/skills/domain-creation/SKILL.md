@@ -83,6 +83,8 @@ Use these MCP tools before creating domains:
 
 - `list_entities` — List all entities in the model to decide which to include
 - `get_entity` — Get detailed info for a specific entity (attributes, metrics, relations)
+- `list_domains` — List all existing domains in the model
+- `get_domain` — Get detailed info for a specific domain (entities, filters, parameters)
 - `search_model` — Search for entities, fields, domains, or other objects by name
 - `get_field` — Get detailed info about a specific field (attribute or metric)
 

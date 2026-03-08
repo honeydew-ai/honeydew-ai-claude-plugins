@@ -33,6 +33,8 @@ Use the Honeydew MCP tools to interact with the model.
 - `list_entities` - List all entities in the model (names, keys, descriptions)
 - `get_entity` - Get detailed info for a specific entity (attributes, metrics, datasets, relations, YAML)
 - `get_field` - Get detailed info for a specific field (attribute or metric) within an entity
+- `list_domains` - List all domains with their names, descriptions, and entities
+- `get_domain` - Get detailed info for a specific domain (entities, filters, parameters, YAML)
 - `search_model` - Search across all model objects (entities, attributes, metrics, datasets, perspectives, domains, parameters)
 
 ### Warehouse Discovery
@@ -133,6 +135,8 @@ Call with:
 - Use `list_entities` to list all entities
 - Use `get_entity` with an entity name to see its attributes, metrics, datasets, and relations
 - Use `get_field` with entity name and field name to get detailed info about a specific field
+- Use `list_domains` to list all domains
+- Use `get_domain` with a domain name to see its entities, filters, parameters, and YAML definition
 - Use `search_model` with a query string to find any model object by name
 
 ## Documentation Lookup

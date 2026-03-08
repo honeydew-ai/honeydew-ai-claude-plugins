@@ -2,7 +2,7 @@
   "name": "data-analysis-tools",
   "displayName": "Data Analysis Tools",
   "description": "Tools for data analysis with Honeydew AI",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "author": {
     "name": "Honeydew AI",
     "email": "support@honeydew.ai"
