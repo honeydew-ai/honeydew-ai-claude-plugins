@@ -143,35 +143,11 @@ END
 
 ### 4. Filtering by Metric Values
 
-You can filter on aggregated metric values — the equivalent of SQL's `HAVING` clause. Use the same metric expression in the `filters` parameter of a structured query.
+You can filter on aggregated metric values — the equivalent of SQL's `HAVING` clause. Use the metric expression (named or ad-hoc) in the `filters` parameter of a structured query. These filters are applied **after** aggregation.
 
-**Example — only groups with more than 10 listings:**
+This works with both named metrics (e.g., `entity.metric_name > 10`) and ad-hoc aggregations (e.g., `COUNT(entity.field) > 1`).
 
-Call `get_data_from_fields` with:
-
-- `attributes`: `["detailed_listings.neighbourhood_cleansed"]`
-- `metrics`: `["detailed_listings.count"]`
-- `filters`: `["detailed_listings.count > 10"]`
-- `order_by`: `["detailed_listings.count DESC"]`
-
-**Example — find duplicate values (count > 1):**
-
-Call `get_data_from_fields` with:
-
-- `attributes`: `["detailed_listings.host_name"]`
-- `metrics`: `["COUNT(detailed_listings.host_name)"]`
-- `filters`: `["COUNT(detailed_listings.host_name) > 1"]`
-- `order_by`: `["COUNT(detailed_listings.host_name) DESC"]`
-
-**Example — high-revenue categories only:**
-
-Call `get_data_from_fields` with:
-
-- `attributes`: `["orders.category"]`
-- `metrics`: `["orders.total_revenue"]`
-- `filters`: `["orders.total_revenue > 10000"]`
-
-Metric filters work with both named metrics (e.g., `entity.metric_name`) and ad-hoc aggregations (e.g., `COUNT(entity.field)`). They are applied **after** aggregation.
+> For examples — including duplicate detection, minimum group size, and revenue thresholds — see `examples.md`.
 
 ---
 
