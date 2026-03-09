@@ -10,7 +10,7 @@ description: Use when exploring Honeydew semantic layer, discovering entities/fi
 Before ANY Honeydew work, set up your session and discover the model:
 
 **Step 0: Set workspace and branch**
-Use `get_session_workspace_and_branch` to check the current session context. If no workspace/branch is set, use `list_workspaces` and `set_session_workspace_and_branch` to select the right workspace and branch. All subsequent tool calls use this context.
+Use `get_session_workspace_and_branch` to check the current session context. If no workspace/branch is set, use `list_workspaces`, `list_workspace_branches`, and `set_session_workspace_and_branch` to select the right workspace and branch. All subsequent tool calls use this context.
 
 **Step 1: List entities**
 Use the `list_entities` MCP tool to see all entities in the model.
@@ -36,14 +36,14 @@ Use the Honeydew MCP tools to interact with the model.
 - `list_workspaces` - List all available workspaces. Returns the workspace name and the data warehouse type (`snowflake`, `databricks`, or `bigquery`). Use the warehouse type to inform SQL dialect choices in semantic model implementation.
 - `list_workspace_branches` - List all branches available for a workspace. Requires `workspace_id` (the workspace name).
 - `get_session_workspace_and_branch` - Get the workspace and branch set for the current session.
-- `set_session_workspace_and_branch` - Set the workspace and branch to use for the current session. All subsequent tool calls use this workspace and branch. Requires `workspace_id`; optional `branch_id` (defaults to `prod`).
-- `create_workspace_branch` - Create a new branch for an existing workspace. The branch is created from the current state of the workspace's `prod` branch. Requires `workspace_id` and `branch_name`.
+- `set_session_workspace_and_branch` - Set the workspace and branch to use for the current session. All subsequent tool calls use this workspace and branch. Requires `workspace_id`; optional `branch_id` (omit to use the production branch, which is the default).
+- `create_workspace_branch` - Create a new branch for an existing workspace. The branch is created from the current state of the workspace's `prod` branch. The session automatically switches to the new branch. Requires `workspace_id` and `branch_name`.
 
 **Typical flow:**
 
 1. `get_session_workspace_and_branch` — check if a workspace/branch is already set
 2. If not set: `list_workspaces` → pick a workspace → `set_session_workspace_and_branch`
-3. For development work: `create_workspace_branch` → `set_session_workspace_and_branch` to switch to the new branch
+3. For development work: `create_workspace_branch` (session switches to the new branch automatically)
 
 ### Discovery
 

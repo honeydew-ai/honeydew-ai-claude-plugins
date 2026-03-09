@@ -5,7 +5,7 @@ description: Guides you through defining a relationship between two Honeydew ent
 
 ## Prerequisites
 
-Before creating relations, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` and switch to it with `set_session_workspace_and_branch`. See the `model-exploration` skill for the full workspace/branch tool reference.
+Before creating relations, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` (the session switches automatically). See the `model-exploration` skill for the full workspace/branch tool reference.
 
 ---
 

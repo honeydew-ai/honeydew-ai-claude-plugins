@@ -5,7 +5,7 @@ description: Use when the user wants to query, analyze, or explore data through 
 
 ## Prerequisites
 
-Queries run against the workspace and branch set for the current session. Use `get_session_workspace_and_branch` to check the current context. If no workspace/branch is set, use `list_workspaces` and `set_session_workspace_and_branch` to select one. See the `model-exploration` skill for the full workspace/branch tool reference.
+Queries run against the workspace and branch set for the current session. Use `get_session_workspace_and_branch` to check the current context. If no workspace/branch is set, use `list_workspaces`, `list_workspace_branches`, and `set_session_workspace_and_branch` to select one. See the `model-exploration` skill for the full workspace/branch tool reference.
 
 ---
 
