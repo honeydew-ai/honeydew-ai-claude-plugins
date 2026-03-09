@@ -2,6 +2,13 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.6.0] - 2026-03-09
+
+### Added
+
+- **Workspace & branch session tools** — document `list_workspaces`, `list_workspace_branches`, `get_session_workspace_and_branch`, `set_session_workspace_and_branch`, and `create_workspace_branch` MCP tools in model-exploration skill
+- **Prerequisites sections** — all creation skills and the query skill now include workspace/branch context prerequisites
+
 ## [0.5.5] - 2026-03-08
 
 ### Added
