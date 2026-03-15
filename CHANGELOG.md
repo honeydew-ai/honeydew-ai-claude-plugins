@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.6.1] - 2026-03-15
+
+### Changed
+
+- **Gemini CLI support** — skills directory moved from `skills/` to `.gemini/skills/` for native Gemini CLI integration
+
 ## [0.6.0] - 2026-03-09
 
 ### Added
