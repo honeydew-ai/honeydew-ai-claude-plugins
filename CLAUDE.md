@@ -24,13 +24,15 @@ When releasing a new version, update **all** of these files:
 8. `plugins/semantic-modeling-tools/.claude-plugin/plugin.json`
 9. `plugins/semantic-modeling-tools/.cursor-plugin/plugin.json`
 10. `plugins/semantic-modeling-tools/.github/plugin/plugin.json`
+11. `gemini-extension.json` — `version`
 
 ## Skill Conventions
 
 - Each skill lives in `plugins/<plugin>/skills/<skill-name>/`
-- `.cursor/skills/` contains relative symlinks to every skill directory.
-  When adding, renaming, or deleting a skill, update the symlinks
-  (e.g., `ln -s ../../plugins/<plugin>/skills/<skill-name>/ .cursor/skills/<skill-name>`)
+- `.cursor/skills/` and `.gemini/skills/` contain relative symlinks to every skill directory.
+  When adding, renaming, or deleting a skill, update the symlinks in both:
+  - `.cursor/skills/`: `ln -s ../../plugins/<plugin>/skills/<skill-name>/ .cursor/skills/<skill-name>`
+  - `.gemini/skills/`: `ln -s ../../plugins/<plugin>/skills/<skill-name>/ .gemini/skills/<skill-name>`
 - `SKILL.md` (uppercase) is required — has YAML frontmatter with `name` and `description`
 - Optional companion files: `examples.md`, `reference.md` (lowercase)
 - Field references always use `entity.field_name` (fully qualified)
