@@ -13,10 +13,10 @@ Queries run against the workspace and branch set for the current session. Use `g
 
 Honeydew provides three ways to query data through the semantic layer. Each method suits a different situation — pick the right one based on how well you understand the model and how complex the question is.
 
-| Method               | Tool                                           | Best For                                                 |
-| -------------------- | ---------------------------------------------- | -------------------------------------------------------- |
-| **Structured query** | `get_data_from_fields` / `get_sql_from_fields` | You know the exact fields. Deterministic, full control.  |
-| **Deep analysis**    | `ask_deep_analysis_question`                   | Complex, multi-step, "why" questions. Agentic reasoning. |
+| Method               | Tool                                           | Best For                                                                         |
+| -------------------- | ---------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Structured query** | `get_data_from_fields` / `get_sql_from_fields` | You know the exact fields. Deterministic, full control.                          |
+| **Deep analysis**    | `ask_deep_analysis_question`                   | Any natural language question — simple or complex, "why", multi-step, agentic.  |
 
 ---
 
@@ -47,16 +47,13 @@ Both take the same field parameters.
 
 **Use when:**
 
+- The user asks a question in plain English and you don't know the exact field names
+- The user wants a quick answer without worrying about model details
 - The question requires multiple steps or investigative reasoning
 - The user asks "why" something happened (e.g., "why did revenue drop in Q3?")
 - The user wants trend analysis, anomaly detection, or root cause investigation
 - The question is open-ended and may require looking at the data from multiple angles
 - Follow-up questions build on prior analysis (use `conversation_id`)
-
-**Do NOT use when:**
-
-- The question is simple and can be answered with a single query
-- You just need to fetch specific data points
 
 ---
 
@@ -68,14 +65,12 @@ User asks a data question
     ├─► Do you know the exact field names?
     │       │
     │       ├─► YES → get_data_from_fields (structured, deterministic)
+    │       │         (or get_sql_from_fields to preview SQL without executing)
     │       │
-    │       └─► NO → list_entities / get_entity → then get_data_from_fields
+    │       └─► NO → ask_deep_analysis_question (plain English, any complexity)
     │
-    ├─► Does it require investigation, "why", trends, or multi-step reasoning?
-    │       └─► YES → ask_deep_analysis_question
-    │
-    └─► Does the user want to see the SQL without running it?
-            └─► From known fields → get_sql_from_fields
+    └─► Plain English question / investigation / "why" / trends?
+            └─► ask_deep_analysis_question
 ```
 
 ---

@@ -68,7 +68,7 @@ Use the Honeydew MCP tools to interact with the model.
 
 ### AI-Powered Queries
 
-- `ask_deep_analysis_question` - Multi-step agentic analysis for complex/why questions
+- `ask_deep_analysis_question` - Natural language question (simple or complex) → agentic analysis and results
 
 ## Example Usage
 
@@ -80,14 +80,14 @@ User Request
     ├─► Exact field names known? Want structured query?
     │       └─► YES → get_data_from_fields (deterministic, structured)
     │
-    └─► Complex analysis / multi-step / "why" questions?
-            └─► YES → ask_deep_analysis_question (agentic)
+    └─► Plain English / natural language / "why" / investigation?
+            └─► ask_deep_analysis_question (any complexity)
 ```
 
-| Tool                         | Use When                   | Example Request                               |
-| ---------------------------- | -------------------------- | --------------------------------------------- |
-| `get_data_from_fields`       | Known fields, programmatic | "Get total_revenue by month for 2021"         |
-| `ask_deep_analysis_question` | Trends, root cause, "why"  | "Find revenue drops and contributing factors" |
+| Tool                         | Use When                                        | Example Request                               |
+| ---------------------------- | ----------------------------------------------- | --------------------------------------------- |
+| `get_data_from_fields`       | Known fields, programmatic                      | "Get total_revenue by month for 2021"         |
+| `ask_deep_analysis_question` | Plain English questions, trends, root cause     | "Show me revenue by city last 2 years"        |
 
 ---
 
