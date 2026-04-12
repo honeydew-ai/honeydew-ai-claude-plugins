@@ -214,8 +214,13 @@ domain: "my_domain"
 conversation_id: "<id from previous response>"
 ```
 
-### Good Deep Analysis Questions
+### Example Questions
 
+**Simple natural language:**
+- "What are the top 10 neighbourhoods by number of listings?"
+- "Show me average price by room type."
+
+**Complex analysis:**
 - "Why did the average review score drop for listings in Brooklyn?"
 - "What factors most influence listing price? Analyze the key drivers."
 - "Compare superhost vs non-superhost performance across all metrics."

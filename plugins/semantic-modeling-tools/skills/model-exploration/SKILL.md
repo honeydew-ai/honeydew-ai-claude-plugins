@@ -84,10 +84,11 @@ User Request
             └─► ask_deep_analysis_question (any complexity)
 ```
 
-| Tool                         | Use When                                        | Example Request                               |
-| ---------------------------- | ----------------------------------------------- | --------------------------------------------- |
-| `get_data_from_fields`       | Known fields, programmatic                      | "Get total_revenue by month for 2021"         |
-| `ask_deep_analysis_question` | Plain English questions, trends, root cause     | "Show me revenue by city last 2 years"        |
+| Tool                         | Use When                                    | Example Request                                       |
+| ---------------------------- | ------------------------------------------- | ----------------------------------------------------- |
+| `get_data_from_fields`       | Known fields, programmatic                  | "Get total_revenue by month for 2021"                 |
+| `ask_deep_analysis_question` | Plain English questions, trends, root cause | "Show me revenue by city last 2 years"                |
+| `ask_deep_analysis_question` | Complex analysis, "why", multi-step         | "Find revenue drops and find contributing factors"    |
 
 ---
 
@@ -111,11 +112,11 @@ Same field parameters as `get_data_from_fields`, but returns the generated SQL w
 
 ---
 
-### ask_deep_analysis_question (Complex Analysis)
+### ask_deep_analysis_question (Natural Language Queries)
 
 Call with:
 
-- `question`: `"Look at last 5 years, identify revenue drops and find contributing factors"`
+- `question`: `"Show me revenue by city for the last 2 years"` (simple) or `"Look at last 5 years, identify revenue drops and find contributing factors"` (complex)
 - `conversation_id`: `"conv_123"` (optional, for follow-up questions)
 
 **Returns:** markdown analysis report, data, suggested follow-up questions, conversation_id
