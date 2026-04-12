@@ -2,6 +2,13 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.6.2] - 2026-04-12
+
+### Changed
+
+- **Remove ask-question tools** — removed `ask_question_get_data` and `ask_question_get_sql` from the query skill, model-exploration skill, and hook matcher
+- **Expand deep analysis scope** — `ask_deep_analysis_question` now covers simple natural language questions in addition to complex/multi-step analysis, replacing the removed ask-question tools
+
 ## [0.6.1] - 2026-03-15
 
 ### Changed

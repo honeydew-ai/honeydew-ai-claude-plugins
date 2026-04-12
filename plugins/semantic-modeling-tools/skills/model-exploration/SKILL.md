@@ -68,9 +68,7 @@ Use the Honeydew MCP tools to interact with the model.
 
 ### AI-Powered Queries
 
-- `ask_question_get_data` - Natural language question → executes query and returns results
-- `ask_question_get_sql` - Natural language question → returns generated SQL only
-- `ask_deep_analysis_question` - Multi-step agentic analysis for complex/why questions
+- `ask_deep_analysis_question` - Natural language question (simple or complex) → agentic analysis and results
 
 ## Example Usage
 
@@ -82,18 +80,15 @@ User Request
     ├─► Exact field names known? Want structured query?
     │       └─► YES → get_data_from_fields (deterministic, structured)
     │
-    ├─► Simple question in plain English?
-    │       └─► YES → ask_question_get_data (natural language → results)
-    │
-    └─► Complex analysis / multi-step / "why" questions?
-            └─► YES → ask_deep_analysis_question (agentic)
+    └─► Plain English / natural language / "why" / investigation?
+            └─► ask_deep_analysis_question (any complexity)
 ```
 
-| Tool                         | Use When                    | Example Request                               |
-| ---------------------------- | --------------------------- | --------------------------------------------- |
-| `get_data_from_fields`       | Known fields, programmatic  | "Get total_revenue by month for 2021"         |
-| `ask_question_get_data`      | Plain English, single query | "Show me revenue by city last 2 years"        |
-| `ask_deep_analysis_question` | Trends, root cause, "why"   | "Find revenue drops and contributing factors" |
+| Tool                         | Use When                                    | Example Request                                       |
+| ---------------------------- | ------------------------------------------- | ----------------------------------------------------- |
+| `get_data_from_fields`       | Known fields, programmatic                  | "Get total_revenue by month for 2021"                 |
+| `ask_deep_analysis_question` | Plain English questions, trends, root cause | "Show me revenue by city last 2 years"                |
+| `ask_deep_analysis_question` | Complex analysis, "why", multi-step         | "Find revenue drops and find contributing factors"    |
 
 ---
 
@@ -117,30 +112,11 @@ Same field parameters as `get_data_from_fields`, but returns the generated SQL w
 
 ---
 
-### ask_question_get_data (Natural Language → Results)
+### ask_deep_analysis_question (Natural Language Queries)
 
 Call with:
 
-- `question`: `"show me revenue broken down by month and city, for the last 2 years"`
-- `max_rows`: `100` (required — maximum rows to return)
-
----
-
-### ask_question_get_sql (Natural Language → SQL Only)
-
-Call with:
-
-- `question`: `"show me revenue broken down by month and city, for the last 2 years"`
-
-Returns the generated SQL query without executing it.
-
----
-
-### ask_deep_analysis_question (Complex Analysis)
-
-Call with:
-
-- `question`: `"Look at last 5 years, identify revenue drops and find contributing factors"`
+- `question`: `"Show me revenue by city for the last 2 years"` (simple) or `"Look at last 5 years, identify revenue drops and find contributing factors"` (complex)
 - `conversation_id`: `"conv_123"` (optional, for follow-up questions)
 
 **Returns:** markdown analysis report, data, suggested follow-up questions, conversation_id
