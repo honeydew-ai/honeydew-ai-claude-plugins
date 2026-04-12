@@ -1,6 +1,6 @@
 ---
 name: query
-description: Use when the user wants to query, analyze, or explore data through the Honeydew semantic layer. Covers structured queries, natural-language questions, and multi-step deep analysis.
+description: Use when the user wants to query, analyze, or explore data through the Honeydew semantic layer. Covers structured queries and multi-step deep analysis.
 ---
 
 ## Prerequisites
@@ -13,11 +13,10 @@ Queries run against the workspace and branch set for the current session. Use `g
 
 Honeydew provides three ways to query data through the semantic layer. Each method suits a different situation — pick the right one based on how well you understand the model and how complex the question is.
 
-| Method               | Tool                                             | Best For                                                 |
-| -------------------- | ------------------------------------------------ | -------------------------------------------------------- |
-| **Structured query** | `get_data_from_fields` / `get_sql_from_fields`   | You know the exact fields. Deterministic, full control.  |
-| **Natural language** | `ask_question_get_data` / `ask_question_get_sql` | Plain English question. Single query, fast answer.       |
-| **Deep analysis**    | `ask_deep_analysis_question`                     | Complex, multi-step, "why" questions. Agentic reasoning. |
+| Method               | Tool                                           | Best For                                                 |
+| -------------------- | ---------------------------------------------- | -------------------------------------------------------- |
+| **Structured query** | `get_data_from_fields` / `get_sql_from_fields` | You know the exact fields. Deterministic, full control.  |
+| **Deep analysis**    | `ask_deep_analysis_question`                   | Complex, multi-step, "why" questions. Agentic reasoning. |
 
 ---
 
@@ -35,7 +34,6 @@ Honeydew provides three ways to query data through the semantic layer. Each meth
 
 **Do NOT use when:**
 
-- You don't know the field names and the user is asking in plain English
 - The question requires multi-step reasoning or investigation
 
 **How it works:**
@@ -45,26 +43,7 @@ Honeydew provides three ways to query data through the semantic layer. Each meth
 
 Both take the same field parameters.
 
-### 2. Natural Language (`ask_question_get_data` / `ask_question_get_sql`)
-
-**Use when:**
-
-- The user asks a question in plain English
-- It's a single, straightforward question that maps to one query
-- You don't know or aren't sure of the exact field names
-- The user wants a quick answer without worrying about model details
-
-**Do NOT use when:**
-
-- The question involves multiple steps, comparisons across time periods, or root cause analysis
-- You already know the exact fields — use a structured query instead for precision
-
-**How it works:**
-
-- `ask_question_get_data` — translates the question to SQL, executes it, and returns results
-- `ask_question_get_sql` — translates the question to SQL and returns the SQL only
-
-### 3. Deep Analysis (`ask_deep_analysis_question`)
+### 2. Deep Analysis (`ask_deep_analysis_question`)
 
 **Use when:**
 
@@ -90,21 +69,13 @@ User asks a data question
     │       │
     │       ├─► YES → get_data_from_fields (structured, deterministic)
     │       │
-    │       └─► NO → Can you quickly discover them?
-    │               │
-    │               ├─► YES → list_entities / get_entity → then get_data_from_fields
-    │               │
-    │               └─► NO → ask_question_get_data (let Honeydew resolve fields)
-    │
-    ├─► Is it a simple, single-query question in plain English?
-    │       └─► YES → ask_question_get_data
+    │       └─► NO → list_entities / get_entity → then get_data_from_fields
     │
     ├─► Does it require investigation, "why", trends, or multi-step reasoning?
     │       └─► YES → ask_deep_analysis_question
     │
     └─► Does the user want to see the SQL without running it?
-            ├─► From known fields → get_sql_from_fields
-            └─► From plain English → ask_question_get_sql
+            └─► From known fields → get_sql_from_fields
 ```
 
 ---
@@ -212,48 +183,7 @@ Filters use standard comparison expressions: `=`, `>`, `<`, `IN (...)`, `ILIKE`,
 
 ---
 
-## Method 2: Natural Language Query
-
-### ask_question_get_data
-
-Call with:
-
-- `question` (required): the question in plain English
-- `max_rows` (required): maximum number of rows to return
-- `domain` (required): domain name for query context
-
-```
-question: "What are the top 10 neighbourhoods by number of listings?"
-max_rows: 10
-domain: "my_domain"
-```
-
-Returns the query results directly.
-
-### ask_question_get_sql
-
-Call with:
-
-- `question` (required): the question in plain English
-- `domain` (required): domain name for query context
-
-```
-question: "What are the top 10 neighbourhoods by number of listings?"
-domain: "my_domain"
-```
-
-Returns the generated SQL without executing.
-
-### Tips for Natural Language Queries
-
-- Be specific: "average price per room type" is better than "show me prices"
-- Mention the entity/domain if ambiguous: "average listing price" not just "average price"
-- Include time ranges explicitly: "in the last 12 months" or "for 2024"
-- Specify limits: "top 10", "bottom 5"
-
----
-
-## Method 3: Deep Analysis
+## Method 2: Deep Analysis
 
 ### ask_deep_analysis_question
 
@@ -304,9 +234,8 @@ conversation_id: "<id from previous response>"
 For complex tasks, combine methods in sequence:
 
 1. **Discover** — Use `list_entities` / `get_entity` to understand the model
-2. **Explore** — Use `ask_question_get_data` to get a quick feel for the data
-3. **Drill down** — Use `get_data_from_fields` for precise, targeted queries
-4. **Investigate** — Use `ask_deep_analysis_question` for root cause or trend analysis
+2. **Query** — Use `get_data_from_fields` for precise, targeted queries
+3. **Investigate** — Use `ask_deep_analysis_question` for root cause or trend analysis
 
 ### Example Workflow
 
@@ -314,9 +243,8 @@ User: "Help me understand pricing patterns for Airbnb listings."
 
 1. Discover entities: `list_entities` → find `detailed_listings`
 2. Explore fields: `get_entity` for `detailed_listings` → find `price`, `room_type`, `neighbourhood_cleansed`
-3. Quick overview: `ask_question_get_data` → "What is the average listing price by room type?"
-4. Targeted query: `get_data_from_fields` → price distribution by neighbourhood for Entire homes only
-5. Deep dive: `ask_deep_analysis_question` → "What factors most influence listing price? Analyze correlations with room type, location, amenities, and reviews."
+3. Targeted query: `get_data_from_fields` → price distribution by neighbourhood for Entire homes only
+4. Deep dive: `ask_deep_analysis_question` → "What factors most influence listing price? Analyze correlations with room type, location, amenities, and reviews."
 
 ---
 
@@ -361,8 +289,7 @@ This pattern is useful for:
 
 - **Start with discovery** — always check `list_entities` / `get_entity` before building queries, so you reference real fields
 - **Use structured queries for precision** — when you know the fields, `get_data_from_fields` gives you full control and reproducible results
-- **Use natural language for speed** — when the user asks a quick question and you don't need to control every detail
 - **Use deep analysis for insight** — when the question is about "why" or requires investigating multiple dimensions
 - **Paginate large results** — use `limit` and `offset` in `get_data_from_fields` to avoid overwhelming output
-- **Show SQL when debugging** — use `get_sql_from_fields` or `ask_question_get_sql` to inspect the generated query
+- **Show SQL when debugging** — use `get_sql_from_fields` to inspect the generated query
 - **Reference fields correctly** — always use `entity.field_name` syntax in field parameters

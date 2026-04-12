@@ -68,8 +68,6 @@ Use the Honeydew MCP tools to interact with the model.
 
 ### AI-Powered Queries
 
-- `ask_question_get_data` - Natural language question → executes query and returns results
-- `ask_question_get_sql` - Natural language question → returns generated SQL only
 - `ask_deep_analysis_question` - Multi-step agentic analysis for complex/why questions
 
 ## Example Usage
@@ -82,18 +80,14 @@ User Request
     ├─► Exact field names known? Want structured query?
     │       └─► YES → get_data_from_fields (deterministic, structured)
     │
-    ├─► Simple question in plain English?
-    │       └─► YES → ask_question_get_data (natural language → results)
-    │
     └─► Complex analysis / multi-step / "why" questions?
             └─► YES → ask_deep_analysis_question (agentic)
 ```
 
-| Tool                         | Use When                    | Example Request                               |
-| ---------------------------- | --------------------------- | --------------------------------------------- |
-| `get_data_from_fields`       | Known fields, programmatic  | "Get total_revenue by month for 2021"         |
-| `ask_question_get_data`      | Plain English, single query | "Show me revenue by city last 2 years"        |
-| `ask_deep_analysis_question` | Trends, root cause, "why"   | "Find revenue drops and contributing factors" |
+| Tool                         | Use When                   | Example Request                               |
+| ---------------------------- | -------------------------- | --------------------------------------------- |
+| `get_data_from_fields`       | Known fields, programmatic | "Get total_revenue by month for 2021"         |
+| `ask_deep_analysis_question` | Trends, root cause, "why"  | "Find revenue drops and contributing factors" |
 
 ---
 
@@ -114,25 +108,6 @@ Call `get_data_from_fields` with field parameters:
 ### get_sql_from_fields (SQL Preview)
 
 Same field parameters as `get_data_from_fields`, but returns the generated SQL without executing it.
-
----
-
-### ask_question_get_data (Natural Language → Results)
-
-Call with:
-
-- `question`: `"show me revenue broken down by month and city, for the last 2 years"`
-- `max_rows`: `100` (required — maximum rows to return)
-
----
-
-### ask_question_get_sql (Natural Language → SQL Only)
-
-Call with:
-
-- `question`: `"show me revenue broken down by month and city, for the last 2 years"`
-
-Returns the generated SQL query without executing it.
 
 ---
 
