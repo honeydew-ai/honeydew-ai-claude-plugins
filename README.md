@@ -2,6 +2,14 @@
 
 Skills and tools powered by the [Honeydew MCP](https://honeydew.ai/docs/integration/mcp) that help coding agents build semantic models and analyze data through natural conversation.
 
+## Example Use Cases
+
+**Query your data** — Ask "Show me revenue by region for last quarter." Claude discovers the right entities and metrics, runs the query through the semantic layer, and returns the results.
+
+**Build a semantic model** — Ask "I added a new orders table — create an entity with revenue and order count metrics." Claude imports the table, defines attributes and metrics following your naming conventions, and validates the result.
+
+**Investigate anomalies** — Ask "Why did churn spike last month?" Claude runs a multi-step deep analysis, explores correlations across your model, and surfaces the key drivers with supporting data.
+
 ## Prerequisites
 
 - A coding agent that supports plugins/skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Cursor](https://cursor.com), or any agent with MCP support)
