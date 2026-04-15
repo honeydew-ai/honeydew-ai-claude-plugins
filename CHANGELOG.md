@@ -2,6 +2,13 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.7.0] - 2026-04-15
+
+### Changed
+
+- **Combine into single plugin** — merged `data-analysis-tools` and `semantic-modeling-tools` into a single `honeydew-ai` plugin. All 9 skills are now available from one plugin installation.
+- **Add Honeydew MCP server** — `https://api.honeydew.cloud/mcp/` is now bundled in all `.mcp.json` configurations alongside the existing Honeydew documentation MCP.
+
 ## [0.6.2] - 2026-04-12
 
 ### Changed

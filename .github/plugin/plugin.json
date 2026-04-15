@@ -1,15 +1,17 @@
 {
-  "name": "semantic-modeling-tools",
-  "description": "Tools for semantic modeling with Honeydew AI",
-  "version": "0.6.2",
+  "name": "honeydew-ai",
+  "description": "Skills and tools powered by the Honeydew MCP that help coding agents query data and build semantic models",
+  "version": "0.7.0",
   "author": {
     "name": "Honeydew AI",
     "email": "support@honeydew.ai"
   },
   "repository": "https://github.com/honeydew-ai/honeydew-ai-claude-plugins",
   "license": "Apache-2.0",
-  "keywords": ["semantic-layer", "data-modeling", "honeydew", "analytics"],
+  "keywords": ["semantic-layer", "data-modeling", "honeydew", "analytics", "data-analysis", "querying"],
   "skills": [
+    "./skills/filtering",
+    "./skills/query",
     "./skills/attribute-creation",
     "./skills/domain-creation",
     "./skills/entity-creation",

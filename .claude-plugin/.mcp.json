@@ -3,6 +3,10 @@
     "honeydew-docs": {
       "type": "http",
       "url": "https://honeydew.ai/docs/mcp"
+    },
+    "honeydew": {
+      "type": "http",
+      "url": "https://api.honeydew.cloud/mcp/"
     }
   }
 }

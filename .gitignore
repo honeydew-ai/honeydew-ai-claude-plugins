@@ -28,3 +28,6 @@ temp/
 
 # Agent settings
 **/settings.local.json
+
+# Superpowers docs (specs, plans)
+docs/

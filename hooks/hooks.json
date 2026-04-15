@@ -3,6 +3,16 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": "mcp__.*__(get_data_from_fields|get_sql_from_fields|ask_deep_analysis_question)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/guide-query.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
         "matcher": "mcp__.*__(create_object|update_object|create_entity|import_tables)",
         "hooks": [
           {

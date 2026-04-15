@@ -6,26 +6,15 @@
   },
   "metadata": {
     "description": "Honeydew AI plugins for coding agents - skills and tools powered by the Honeydew AI MCP",
-    "version": "0.6.2",
-    "pluginRoot": "plugins"
+    "version": "0.7.0",
+    "pluginRoot": "."
   },
   "plugins": [
     {
-      "name": "semantic-modeling-tools",
-      "source": "./plugins/semantic-modeling-tools",
-      "description": "Tools for semantic modeling with Honeydew AI",
-      "version": "0.6.2",
-      "author": {
-        "name": "Honeydew AI",
-        "email": "support@honeydew.ai"
-      },
-      "license": "Apache-2.0"
-    },
-    {
-      "name": "data-analysis-tools",
-      "source": "./plugins/data-analysis-tools",
-      "description": "Tools for data analysis with Honeydew AI",
-      "version": "0.6.2",
+      "name": "honeydew-ai",
+      "source": ".",
+      "description": "Skills and tools powered by the Honeydew MCP that help coding agents query data and build semantic models",
+      "version": "0.7.0",
       "author": {
         "name": "Honeydew AI",
         "email": "support@honeydew.ai"
