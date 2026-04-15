@@ -12,7 +12,7 @@
   "plugins": [
     {
       "name": "honeydew-ai",
-      "source": ".",
+      "source": "./",
       "description": "Skills and tools powered by the Honeydew MCP that help coding agents query data and build semantic models",
       "version": "0.7.0",
       "author": {
