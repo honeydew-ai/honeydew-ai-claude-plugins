@@ -17,11 +17,10 @@ Add this marketplace to Claude Code:
 /plugin marketplace add honeydew-ai/honeydew-ai-coding-agents-plugins
 ```
 
-Then install the plugins you need:
+Then install the plugin:
 
 ```
-/plugin install semantic-modeling-tools@honeydew-ai
-/plugin install data-analysis-tools@honeydew-ai
+/plugin install honeydew-ai@honeydew-ai-coding-agents-plugins
 ```
 
 ### Cursor
@@ -33,11 +32,9 @@ Then install the plugins you need:
 
 For coding agents that support MCP, configure the [Honeydew MCP server](https://honeydew.ai/docs/integration/mcp) and use the skill files in this repository as prompts or instructions. The skills are written as agent-agnostic markdown documentation that any coding agent can consume.
 
-## Available Plugins
+## Available Skills
 
-### Semantic Modeling Tools
-
-Tools for building and managing your Honeydew semantic layer. Includes 6 skills:
+The `honeydew-ai` plugin includes 9 skills:
 
 | Skill | Description |
 |-------|-------------|
@@ -46,14 +43,8 @@ Tools for building and managing your Honeydew semantic layer. Includes 6 skills:
 | **relation-creation** | Define relationships between entities with join types, cardinality, and complex join conditions |
 | **attribute-creation** | Create calculated attributes (dimensions) — per-row virtual columns defined with SQL expressions |
 | **metric-creation** | Create metrics (KPIs) — reusable aggregations like totals, averages, ratios, and growth rates |
+| **domain-creation** | Create domains — curated subsets of the semantic model exposed to specific teams or use cases |
 | **validation** | Mandatory post-creation validation — type-specific sanity checks, cross-validation, and error handling |
-
-### Data Analysis Tools
-
-Tools for querying and analyzing data through the Honeydew semantic layer. Includes 2 skills:
-
-| Skill | Description |
-|-------|-------------|
 | **query** | Query data using structured YAML perspectives, natural language questions, or multi-step deep analysis |
 | **filtering** | Advanced filtering syntax — comparisons, string matching, date handling, nulls, and full-text search |
 
