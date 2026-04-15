@@ -53,9 +53,16 @@ copy_glob() {
 stage_plugin() {
   local src="$1" stage="$2"
 
-  # Plugin manifest + MCP config.
+  # Manifest: only plugin.json belongs in .claude-plugin/ per Claude Code docs.
   copy_if_exists "${src}/.claude-plugin/plugin.json" "${stage}/.claude-plugin/plugin.json"
-  copy_if_exists "${src}/.claude-plugin/.mcp.json"   "${stage}/.claude-plugin/.mcp.json"
+
+  # MCP config: .mcp.json must sit at the plugin root (not inside
+  # .claude-plugin/), regardless of where our source tree stores it.
+  if [[ -f "${src}/.mcp.json" ]]; then
+    copy_if_exists "${src}/.mcp.json" "${stage}/.mcp.json"
+  else
+    copy_if_exists "${src}/.claude-plugin/.mcp.json" "${stage}/.mcp.json"
+  fi
 
   # Hooks: JSON config + shell scripts.
   copy_glob "${src}/hooks" "${stage}/hooks" "*.json" "*.sh"
