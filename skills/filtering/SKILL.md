@@ -1,18 +1,18 @@
 ---
 name: filtering
-description: Use when the user needs to filter data — whether in a perspective query, a metric aggregation, or an attribute expression. Covers filter syntax, date handling, and best practices.
+description: Use when the user needs to filter data — whether in a structured query, a metric aggregation, or an attribute expression. Covers filter syntax, date handling, and best practices.
 ---
 
 ## Overview
 
 Filtering restricts which rows contribute to a result. The same expression language applies across three contexts in Honeydew:
 
-| Context                  | Where it appears                       | When it runs       |
-| ------------------------ | -------------------------------------- | ------------------ |
-| **Perspective query**    | `filters:` block in YAML perspective   | Pre-aggregation    |
-| **Metric aggregation**   | `FILTER (WHERE ...)` on an aggregation | During aggregation |
-| **Attribute expression** | `CASE WHEN ... END` in attribute SQL   | Per-row evaluation |
-| **Metric value filter**  | Metric expression in `filters:` param  | Post-aggregation   |
+| Context                  | Where it appears                                          | When it runs       |
+| ------------------------ | --------------------------------------------------------- | ------------------ |
+| **Structured query**     | `filters` parameter in `get_data_from_fields` / `get_sql_from_fields` | Pre-aggregation    |
+| **Metric aggregation**   | `FILTER (WHERE ...)` on an aggregation                    | During aggregation |
+| **Attribute expression** | `CASE WHEN ... END` in attribute SQL                      | Per-row evaluation |
+| **Metric value filter**  | Metric expression in `filters` parameter                  | Post-aggregation   |
 
 ---
 
@@ -100,23 +100,17 @@ DATE('2024-01-01')
 
 ## Filtering Contexts
 
-### 1. Perspective Query Filters
+### 1. Structured Query Filters
 
-In a YAML perspective, the `filters:` block applies row-level filters **before** aggregation:
+Pass filters as a list of expressions in the `filters` parameter of `get_data_from_fields` or `get_sql_from_fields`. Filters are applied **before** aggregation (equivalent to SQL `WHERE`):
 
-```yaml
-type: perspective
-name: entire_home_stats
-attributes:
-  - detailed_listings.neighbourhood_cleansed
-metrics:
-  - detailed_listings.count
-filters:
-  - detailed_listings.room_type = 'Entire home/apt'
-  - detailed_listings.price > 50
-```
+Call `get_data_from_fields` with:
 
-Each entry in the `filters:` list is ANDed together.
+- `attributes`: `["detailed_listings.neighbourhood_cleansed"]`
+- `metrics`: `["detailed_listings.count"]`
+- `filters`: `["detailed_listings.room_type = 'Entire home/apt'", "detailed_listings.price > 50"]`
+
+Each entry in the `filters` list is ANDed together.
 
 ### 2. Metric Aggregation Filters
 
