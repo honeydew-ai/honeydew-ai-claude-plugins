@@ -54,6 +54,13 @@ Use the Honeydew MCP tools to interact with the model.
 - `get_domain` - Get detailed info for a specific domain (entities, filters, parameters, YAML)
 - `search_model` - Search across all model objects (entities, attributes, metrics, datasets, perspectives, domains, parameters)
 
+### Agents & Context
+
+- `list_agents` — List all agents with their names, descriptions, domains, and context references
+- `get_agent` — Get detailed info for a specific agent (domain, context items, welcome message, sample questions)
+- `list_context_items` — List all context items with their types, names, titles, and subtypes
+- `get_context_item` — Get detailed info for a specific context item
+
 ### Warehouse Discovery
 
 - `list_databases` - List all databases in the connected data warehouse

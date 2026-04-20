@@ -23,6 +23,7 @@ Domains are the primary mechanism for creating focused, governed views of the mo
 
 > This skill focuses on domain creation and management.
 > Use `entity-creation` to create entities and `attribute-creation` / `metric-creation` to add fields before scoping them into a domain.
+> To expose a domain for AI analysis, create an agent referencing it using `create_agent` (MCP agent tools) or the Honeydew Studio agent builder.
 
 ---
 

@@ -185,12 +185,12 @@ Filters use standard comparison expressions: `=`, `>`, `<`, `IN (...)`, `ILIKE`,
 Call with:
 
 - `question` (required): the analysis question
-- `domain` (required): domain name for query context
+- `agent` (optional): agent name to use as analysis context — use `list_agents` to discover available agents and their associated domains
 - `conversation_id` (optional): ID from a previous deep analysis call, for follow-up questions
 
 ```
 question: "Analyze the relationship between host response time and review scores. Are there significant patterns?"
-domain: "my_domain"
+agent: "my_agent"
 ```
 
 Returns:
@@ -210,7 +210,7 @@ Use `conversation_id` from the previous response to ask follow-up questions that
 
 ```
 question: "Now break this down by room type — does the pattern hold across all types?"
-domain: "my_domain"
+agent: "my_agent"
 conversation_id: "<id from previous response>"
 ```
 

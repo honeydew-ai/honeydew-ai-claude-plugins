@@ -2,6 +2,14 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [0.7.1] - 2026-04-20
+
+### Changed
+
+- **Update query skill** — `ask_deep_analysis_question` now accepts `agent` (optional) instead of `domain`; use `list_agents` to discover available agents
+- **Update model-exploration skill** — added Agents & Context discovery tools: `list_agents`, `get_agent`, `list_context_items`, `get_context_item`
+- **Update domain-creation skill** — noted that a domain must be exposed through an agent for AI analysis
+
 ## [0.7.0] - 2026-04-15
 
 ### Changed
