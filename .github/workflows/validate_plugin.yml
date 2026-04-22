@@ -17,7 +17,7 @@ jobs:
             - uses: actions/setup-node@v6
 
             - name: Install Claude CLI
-              run: npm install -g @anthropic-ai/claude-code
+              run: npm install -g @anthropic-ai/claude-code@latest
 
             - name: Validate plugin
               run: claude plugin validate .claude-plugin
