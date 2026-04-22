@@ -20,4 +20,4 @@ jobs:
               run: npm install -g @anthropic-ai/claude-code@latest
 
             - name: Validate plugin
-              run: claude plugin validate .claude-plugin
+              run: claude plugin validate .
