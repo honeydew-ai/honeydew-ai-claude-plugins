@@ -46,6 +46,12 @@ codex
 /plugins
 ```
 
+If the marketplace was already added before this repo exposed the Codex wrapper path, refresh it first:
+
+```
+codex plugin marketplace upgrade honeydew-ai-coding-agents-plugins
+```
+
 ### Cursor
 
 1. Go to Cursor Settings -> Rules, Skills, Subagents and click on **+New** next to Rules.

@@ -8,7 +8,7 @@
       "name": "honeydew-ai",
       "source": {
         "source": "local",
-        "path": "./"
+        "path": "./plugins/honeydew-ai"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -15,6 +15,7 @@ skills/                          # All 9 skills (single honeydew-ai plugin)
   validation/
 hooks/                           # PreToolUse hook scripts
 assets/                          # logo.svg
+plugins/honeydew-ai/             # Codex marketplace wrapper path (symlinks to root plugin files)
 .agents/plugins/                 # Codex marketplace config (marketplace.json)
 .claude-plugin/                  # Claude plugin config (plugin.json, .mcp.json, marketplace.json)
 .cursor-plugin/                  # Cursor plugin config (plugin.json, .mcp.json, marketplace.json)
@@ -23,7 +24,7 @@ assets/                          # logo.svg
 .mcp.json                        # Root-level MCP config (honeydew + honeydew-docs servers)
 ```
 
-The repo root IS the single `honeydew-ai` plugin. `.cursor/skills/` and `.gemini/skills/` contain symlinks to `skills/<name>`.
+The repo root IS the single `honeydew-ai` plugin. Codex marketplace entries must point to a non-empty plugin path, so `plugins/honeydew-ai/` is a wrapper made of relative symlinks back to the canonical root plugin files. `.cursor/skills/` and `.gemini/skills/` contain symlinks to `skills/<name>`.
 
 ## Version Bump Checklist
 
@@ -33,7 +34,7 @@ When releasing a new version, update **all** of these files:
 2. `.claude-plugin/marketplace.json` — `metadata.version` + plugin `version`
 3. `.cursor-plugin/marketplace.json` — `metadata.version` + plugin `version`
 4. `.github/plugin/marketplace.json` — `metadata.version` + plugin `version`
-5. `.agents/plugins/marketplace.json` — marketplace entry if install policy/category/source changes
+5. `.agents/plugins/marketplace.json` — marketplace entry if install policy/category/source changes (Codex source path must stay `./plugins/honeydew-ai`)
 6. `.claude-plugin/plugin.json` — `version`
 7. `.cursor-plugin/plugin.json` — `version`
 8. `.github/plugin/plugin.json` — `version`
