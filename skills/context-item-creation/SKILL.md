@@ -160,7 +160,7 @@ See [examples.md](examples.md) for what the full frontmatter documents look like
 - `name`: `folder/rule-name`
 - `title`: short human label
 - prose body: **the rule text** — what the model must do or avoid
-- `related_objects`: *(optional)* directly affected fields or entities — use an entity reference (not a field list) when the instruction applies broadly to most fields of that entity; only include fields that are directly relevant, not peripheral ones
+- `related_objects`: *(optional)* only the fields or entities directly named or constrained by this instruction — not downstream consumers, not lineage, not entities that happen to join to a relevant one; use an entity reference instead of a field list when the instruction applies to most fields of that entity
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller; only set if a different team or person should be listed
 
@@ -224,7 +224,7 @@ Memory items are retrieved on demand when the model judges them relevant to the 
 - prose body: **what happened and why it matters** for data interpretation
 - `from_date`: when the event occurred (point-in-time) or when it started (if a duration)
 - `to_date`: *(optional)* end date for events spanning a period
-- `related_objects`: *(optional)* directly affected fields or entities — use an entity reference (not a field list) when the event affects most fields of that entity; only include fields that are directly relevant, not peripheral ones
+- `related_objects`: *(optional)* only the fields or entities directly changed or affected by this event — not downstream consumers, not lineage, not entities that happen to join to a relevant one; use an entity reference instead of a field list when the event affects most fields of that entity
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller
 
