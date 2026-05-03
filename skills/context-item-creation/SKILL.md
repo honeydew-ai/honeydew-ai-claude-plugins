@@ -64,7 +64,7 @@ Call `create_context_item` with the frontmatter fields as `context_item` paramet
 
 ### After Creation/Update: Display the UI Link
 
-After a successful `create_context_item` or `update_context_item` call, the response includes a `ui_url` field. **Always display this URL to the user** so they can quickly open the item in the Honeydew application.
+After a successful `create_context_item` or `update_context_item` call, the response includes a `ui_url` field. **Always display this URL to the user** so they can quickly open the folder containing the item in the Honeydew application. Note: the URL links to the **folder**, not directly to the individual item.
 
 ### update_context_item
 
