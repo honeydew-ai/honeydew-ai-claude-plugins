@@ -3,6 +3,12 @@ name: context-item-creation
 description: Guides you through creating context items — instructions, skills, knowledge pointers, and memory events — that give the AI analyst persistent knowledge about your organization. Covers when to create each type, naming conventions, folder organization, and the hard boundary between context (rules and procedures) and the semantic layer (logic and calculations).
 ---
 
+## Prerequisites
+
+Before creating context items, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` (the session switches automatically). See the `model-exploration` skill for the full workspace/branch tool reference.
+
+---
+
 ## Overview
 
 **Context items** are the mechanism for giving the AI analyst persistent, organizational knowledge: standing rules it must always follow, on-demand procedures it can retrieve, external references it can look up, and a historical record of notable events.
@@ -52,6 +58,27 @@ If the information describes *how to compute something*, *what a value means mat
 
 ## MCP Tools
 
+### create_context_item
+
+Call `create_context_item` with the frontmatter fields as `context_item` parameters and the prose body as `markdown_text`.
+
+### After Creation/Update: Display the UI Link
+
+After a successful `create_context_item` or `update_context_item` call, the response includes a `ui_url` field. **Always display this URL to the user** so they can quickly open the item in the Honeydew application.
+
+### update_context_item
+
+To modify an existing context item:
+
+1. Call `get_context_item` with the item's name to read its current content.
+2. Call `update_context_item` with the item's `name` and the updated `context_item` fields and `markdown_text`.
+
+> **Minimal diff rule:** Only change the fields you need to modify. Context items are versioned in git, so unnecessary reformatting creates noisy diffs.
+
+### delete_context_item
+
+Call `delete_context_item` with the item's `name`.
+
 | Task | Tool |
 |---|---|
 | Create | `create_context_item` |
@@ -59,8 +86,6 @@ If the information describes *how to compute something*, *what a value means mat
 | Delete | `delete_context_item` |
 | Get one | `get_context_item` |
 | List all | `list_context_items` |
-
-All context item tools require an active workspace/branch session. Use `get_session_workspace_and_branch` to check, and `create_workspace_branch` for development work.
 
 ---
 
@@ -221,6 +246,18 @@ See [examples.md](examples.md) for full worked examples of each type, plus right
 - `list_context_items` — see all existing items (avoid duplicates)
 - `get_context_item` — read a specific item's current content before updating
 - `list_agents` / `get_agent` — see which agents reference which context globs, to understand the scoping impact of adding a new item
+
+---
+
+## Documentation Lookup
+
+Use the `honeydew-docs` MCP tools to search the Honeydew documentation when:
+
+- You need to understand how context items interact with agents or how retrieval works
+- The user asks about agent configuration, glob patterns, or context scoping
+- You need guidance on memory subtypes or advanced context item options
+
+Search for topics like: "context items", "instructions", "agent context", "memory events", "skills".
 
 ---
 
