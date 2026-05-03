@@ -111,26 +111,36 @@ This way, an agent configured with `finance/*` automatically gets all finance co
 
 ---
 
+## Frontmatter format
+
+Context items are stored as frontmatter documents: a YAML block between `---` delimiters, followed by a markdown prose body. When calling `create_context_item`, pass the YAML fields as `context_item` parameters and the prose body as the `markdown_text` parameter.
+
+The `description` field is the **retrieval signal** — the model reads it to decide whether to fetch an on-demand item. It is **only used for skills and knowledge**. Do not add `description` to instructions or memory events; their only content is the prose body.
+
+See [examples.md](examples.md) for what the full frontmatter documents look like.
+
+---
+
 ## Type Reference
 
 ### Instruction — standing rule (always on)
 
 **Use when:** There is a standing preference, constraint, or fact that the model must respect in every conversation. These are injected into every prompt automatically.
 
-**Keep instructions concise.** They are never filtered out, so verbose instructions bloat every prompt. If it takes more than a few sentences, it should be a skill instead.
+**Keep instructions concise.** They are never filtered out, so verbose instructions bloat every prompt. If the content is more than a short paragraph, turn it into a skill instead.
 
 **Parameters:**
 - `type`: `instruction`
 - `subtype`: `instruction`
 - `name`: `folder/rule-name`
 - `title`: short human label
-- `description`: what the rule says (this IS the rule text)
+- prose body: **the rule text** — what the model must do or avoid
+- `related_objects`: *(recommended)* list of fields or entities this instruction applies to — helps the system surface it when those objects are in context
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller; only set if a different team or person should be listed
 
 **Good instruction topics:**
 - Metric selection preferences ("always use net_revenue")
-- Output format preferences ("present numbers in thousands")
 - Domain-specific constraints ("exclude test accounts from all analyses")
 - Terminology corrections ("what users call 'bookings' maps to the `orders.gmv` metric")
 
@@ -138,14 +148,15 @@ This way, an agent configured with `finance/*` automatically gets all finance co
 
 **Use when:** There is a multi-step analysis procedure the model should follow when asked about a specific topic. Skills are retrieved when the model judges them relevant based on the description.
 
-**Write a rich, keyword-dense description** — this is what the model uses to decide whether to retrieve the skill. A weak description means the skill will be missed.
+**Write a rich, keyword-dense `description`** — this is what the model reads to decide whether to retrieve the skill. A weak description means the skill will be missed.
 
 **Parameters:**
 - `type`: `instruction`
 - `subtype`: `skill`
 - `name`: `topic-or-folder/topic`
 - `title`: short human label
-- `description`: precise description of when to use this skill and what it covers (used for retrieval)
+- `description`: **required** — precise, keyword-rich description of when to use this skill and what it covers (this is the retrieval signal)
+- prose body: **the playbook** — step-by-step guide written in markdown (goes after the closing `---`)
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller
 
@@ -159,16 +170,17 @@ This way, an agent configured with `finance/*` automatically gets all finance co
 
 **Use when:** There is an external document (Confluence page, Notion database, runbook, policy) that the model should consult when answering relevant questions. The model fetches the content via an MCP server at retrieval time.
 
-**Write a precise description** that includes the topics the document covers — this is the retrieval signal.
+**Write a precise `description`** that includes the topics the document covers — this is the retrieval signal.
 
 **Parameters:**
 - `type`: `instruction`
 - `subtype`: `knowledge`
 - `name`: `source-folder/document-name`
 - `title`: short human label
-- `description`: what topics this document covers (used for retrieval)
+- `description`: **required** — what topics this document covers (used for retrieval)
 - `external_source.tool`: the MCP server name (e.g. `confluence`, `notion`)
 - `external_source.resource_id`: the URI within that server (e.g. `confluence://Page-Title`)
+- prose body: typically omit — the content is fetched from the external source at runtime
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller
 
@@ -183,9 +195,10 @@ Memory items are retrieved on demand when the model judges them relevant to the 
 - `subtype`: `event`
 - `name`: `domain/event-name`
 - `title`: short human label
-- `description`: what happened and why it matters for data interpretation
+- prose body: **what happened and why it matters** for data interpretation
 - `from_date`: when the event occurred (point-in-time) or when it started (if a duration)
 - `to_date`: *(optional)* end date for events spanning a period
+- `related_objects`: *(recommended)* fields or entities affected by this event — helps the system surface the memory when those objects are queried
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller
 

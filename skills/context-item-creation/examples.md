@@ -1,5 +1,7 @@
 # Context Item Examples
 
+Context items are frontmatter documents: a YAML block followed by a markdown prose body. Examples below show the full document as it would be stored.
+
 ---
 
 ## Right vs. Wrong — The Semantic Layer Boundary
@@ -9,9 +11,13 @@ These are the most common mistakes. Check these before creating anything.
 ### ❌ Wrong: encoding calculation logic in an instruction
 
 ```
+---
+type: instruction
+subtype: instruction
 name: revenue-calculation
-type: instruction / subtype: instruction
-description: Revenue should be calculated as price multiplied by quantity, minus discounts.
+title: Revenue calculation rule
+---
+Revenue should be calculated as price multiplied by quantity, minus discounts.
 ```
 
 **Why wrong:** This is SQL logic. It belongs in a metric.
@@ -34,10 +40,20 @@ sql: SUM(orders.price * orders.quantity - orders.discount_amount)
 Then, if you want the AI to always prefer this metric, create an instruction that **refers to it by name**:
 
 ```
+---
+type: instruction
+subtype: instruction
 name: finance/use-net-revenue
-type: instruction / subtype: instruction
 title: Use net revenue for revenue questions
-description: Always use orders.net_revenue for any revenue-related analysis. Do not use orders.gross_revenue unless the user explicitly requests gross figures.
+labels: [finance]
+related_objects:
+- name: orders.net_revenue
+  type: field
+- name: orders.gross_revenue
+  type: field
+---
+Always use `orders.net_revenue` for any revenue-related analysis.
+Do not use `orders.gross_revenue` unless the user explicitly requests gross figures.
 ```
 
 ---
@@ -45,21 +61,29 @@ description: Always use orders.net_revenue for any revenue-related analysis. Do 
 ### ❌ Wrong: documenting table structure in a knowledge item
 
 ```
+---
+type: instruction
+subtype: knowledge
 name: orders-schema
-type: instruction / subtype: knowledge
-description: The orders table has columns: order_id, customer_id, amount, status, created_at...
+title: Orders table schema
+---
+The orders table has columns: order_id, customer_id, amount, status, created_at...
 ```
 
 **Why wrong:** Table structure belongs in entities and datasets (see `entity-creation` skill).
 
 ---
 
-### ❌ Wrong: defining a segment rule in an instruction
+### ❌ Wrong: encoding a segment definition in an instruction
 
 ```
+---
+type: instruction
+subtype: instruction
 name: active-customer-definition
-type: instruction / subtype: instruction
-description: Active customers are those who have placed an order in the last 90 days.
+title: Active customer definition
+---
+Active customers are those who have placed an order in the last 90 days.
 ```
 
 **Why wrong:** This is a filter expression. It belongs as a calculated attribute `is_active` with `sql: orders.last_order_date >= CURRENT_DATE - 90`, so it can be used in queries.
@@ -70,15 +94,22 @@ description: Active customers are those who have placed an order in the last 90 
 
 **Scenario:** The finance team always wants net revenue used in reports, not gross.
 
-Call `create_context_item` with:
-
 ```
+---
 type: instruction
 subtype: instruction
 name: finance/use-net-revenue
 title: Always use net revenue
-description: For all revenue analyses, use orders.net_revenue (which excludes returns and discounts). Use orders.gross_revenue only when the user explicitly requests gross figures. Never mix gross and net in the same analysis without labeling clearly.
-labels: ["finance"]
+labels: [finance]
+related_objects:
+- name: orders.net_revenue
+  type: field
+- name: orders.gross_revenue
+  type: field
+---
+For all revenue analyses, use `orders.net_revenue` (which excludes returns and discounts).
+Use `orders.gross_revenue` only when the user explicitly requests gross figures.
+Never mix gross and net in the same analysis without labeling which is which.
 ```
 
 ---
@@ -87,22 +118,15 @@ labels: ["finance"]
 
 **Scenario:** The team has a standard procedure for investigating revenue drops.
 
-Call `create_context_item` with:
-
 ```
+---
 type: instruction
 subtype: skill
 name: finance/revenue-drop-investigation
 title: Revenue Drop Investigation Playbook
 description: Step-by-step guide for investigating unexpected revenue drops. Covers: isolating the time period, segmenting by product line and geography, comparing acquisition vs. retention contribution, identifying order count vs. average order value decomposition, and ruling out data quality issues. Use when asked to diagnose or explain a revenue decline, shortfall, or anomaly.
-labels: ["finance", "investigation"]
-```
-
-`markdown_text` (the skill body — write as a multi-step guide in markdown):
-
-```markdown
+labels: [finance, investigation]
 ---
-
 ## Revenue Drop Investigation
 
 1. **Isolate the time period** — compare the drop window to the prior equivalent period (e.g., same week last month, same month last year) using `get_data_from_fields` with `orders.net_revenue` grouped by date.
@@ -118,22 +142,15 @@ labels: ["finance", "investigation"]
 
 **Scenario:** Customer success has a procedure for churn root-cause analysis.
 
-Call `create_context_item` with:
-
 ```
+---
 type: instruction
 subtype: skill
 name: customer/churn-investigation
 title: Customer Churn Investigation Playbook
 description: Procedure for diagnosing elevated customer churn. Covers cohort isolation by signup month, retention curve comparison across cohorts, engagement signal correlation (logins, feature usage), and identification of the lifecycle stage where drop-off occurs. Use when asked to investigate, explain, or predict customer churn or retention changes.
-labels: ["customer", "churn"]
-```
-
-`markdown_text` (the skill body — write as a multi-step guide in markdown):
-
-```markdown
+labels: [customer, churn]
 ---
-
 ## Churn Investigation Playbook
 
 1. **Isolate the cohort** — group customers by `customers.signup_month` and compute `customers.churn_rate` per cohort to identify whether churn is elevated for a specific signup period or broadly across all cohorts.
@@ -149,9 +166,8 @@ labels: ["customer", "churn"]
 
 **Scenario:** The data governance team has a Confluence page defining metric ownership rules.
 
-Call `create_context_item` with:
-
 ```
+---
 type: instruction
 subtype: knowledge
 name: confluence/data-governance-policy
@@ -160,8 +176,11 @@ description: Official data governance policy covering metric ownership rules, de
 external_source:
   tool: confluence
   resource_id: confluence://Data-Governance-Policy
-labels: ["governance"]
+labels: [governance]
+---
 ```
+
+No body needed — the content is fetched from the external source at retrieval time.
 
 ---
 
@@ -169,16 +188,21 @@ labels: ["governance"]
 
 **Scenario:** On March 1, 2024, the revenue metric was redefined to exclude refunds.
 
-Call `create_context_item` with:
-
 ```
+---
 type: memory
 subtype: event
 name: finance/revenue-redefinition-2024
 title: Revenue metric redefined to exclude refunds
 from_date: 2024-03-01
-description: The revenue metric was redefined to exclude refund transactions. Historical data was backfilled to 2020-01-01. Any trend analysis crossing March 2024 is consistent; data before 2020 retains the old definition and is not comparable.
-labels: ["finance", "metric-change"]
+labels: [finance, metric-change]
+related_objects:
+- name: orders.net_revenue
+  type: field
+- name: orders.gross_revenue
+  type: field
+---
+The revenue metric was redefined to exclude refund transactions. Historical data was backfilled to 2020-01-01. Any trend analysis crossing March 2024 is consistent; data before 2020 retains the old definition and is not comparable.
 ```
 
 ---
@@ -187,17 +211,24 @@ labels: ["finance", "metric-change"]
 
 **Scenario:** A migration ran for two weeks and caused incomplete order data during that window.
 
-Call `create_context_item` with:
-
 ```
+---
 type: memory
 subtype: event
 name: eng/orders-migration-data-gap
 title: Orders table migration — incomplete data window
 from_date: 2024-07-10
 to_date: 2024-07-24
-description: During the orders table migration, approximately 8% of order records were dropped due to a join key mismatch. Order counts and revenue metrics for July 10–24, 2024 are understated. The gap was not backfilled. Flag this period as unreliable in any trend analysis.
-labels: ["data-quality", "migration"]
+labels: [data-quality, migration]
+related_objects:
+- name: orders
+  type: entity
+- name: orders.order_count
+  type: field
+- name: orders.net_revenue
+  type: field
+---
+During the orders table migration, approximately 8% of order records were dropped due to a join key mismatch. Order counts and revenue metrics for July 10–24, 2024 are understated. The gap was not backfilled. Flag this period as unreliable in any trend analysis.
 ```
 
 ---
