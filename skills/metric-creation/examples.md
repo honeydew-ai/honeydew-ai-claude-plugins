@@ -75,19 +75,55 @@ datatype: number
 sql: COUNT(orders.order_id)
 ```
 
-## Distinct count
+## Distinct count — distinct customers across orders
 
-Call `create_object` with yaml_text:
+When counting distinct values of a foreign key, prefer the related entity's `count` metric
+**combined with a join-forcing filter** that references a non-null column on the source
+entity. Without the filter, the Honeydew optimizer can prune the join in standalone
+queries and return the related entity's full standalone total instead of the filtered
+subset described by the metric.
+
+**Preferred form** — named-metric with join-forcing filter:
 
 ```yaml
 type: metric
 entity: orders
 name: unique_customers
 display_name: Unique Customers
-description: Count of distinct customers
+description: Count of distinct customers with at least one order
+owner: data-team
+datatype: number
+sql: customers.count FILTER (WHERE orders.order_id IS NOT NULL)
+```
+
+The `FILTER (WHERE orders.order_id IS NOT NULL)` predicate references a per-row column on
+the source entity, which forces Honeydew to actually join orders to customers on the
+relation key. The result correctly equals "customers with at least one order."
+
+**Fallback form** — only when there's no relation or no count metric on the related entity:
+
+```yaml
+type: metric
+entity: orders
+name: unique_customers
+display_name: Unique Customers
+description: Count of distinct customers with at least one order
 owner: data-team
 datatype: number
 sql: COUNT(DISTINCT orders.customer_id)
+```
+
+**Don't do this** — looks right, breaks under standalone queries because the optimizer
+prunes the orders join entirely:
+
+```yaml
+sql: customers.count   # standalone query returns ALL customers, not just customers-with-orders
+```
+
+**Don't do this either** — `customers.count > 0` evaluates as a global scalar, not per-row:
+
+```yaml
+sql: customers.count FILTER (WHERE orders.count > 0)   # filter is always true, no-op
 ```
 
 ## Fixed Grouping — daily revenue share
