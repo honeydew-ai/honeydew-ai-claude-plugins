@@ -140,7 +140,7 @@ This way, an agent configured with `finance/*` automatically gets all finance co
 
 Context items are stored as frontmatter documents: a YAML block between `---` delimiters, followed by a markdown prose body. When calling `create_context_item`, pass the YAML fields as `context_item` parameters and the prose body as the `markdown_text` parameter.
 
-The `description` field is the **retrieval signal** — the model reads it to decide whether to fetch an on-demand item. It is **only used for skills and knowledge**. Do not add `description` to instructions or memory events; their only content is the prose body.
+The `description` field is the **retrieval signal** — the model reads it to decide whether to fetch an on-demand item. It is **used for skills, knowledge, and memory events**. Do not add `description` to instructions; their only content is the prose body.
 
 See [examples.md](examples.md) for what the full frontmatter documents look like.
 
@@ -220,6 +220,7 @@ Memory items are retrieved on demand when the model judges them relevant to the 
 - `subtype`: `event`
 - `name`: `domain/event-name`
 - `title`: short human label
+- `description`: **required** — what this event is about (used for retrieval)
 - prose body: **what happened and why it matters** for data interpretation
 - `from_date`: when the event occurred (point-in-time) or when it started (if a duration)
 - `to_date`: *(optional)* end date for events spanning a period
