@@ -134,7 +134,7 @@ Use these MCP tools to explore existing metrics:
 
 - `get_entity` — Get entity details including all its metrics, attributes, datasets, and relations
 - `get_field` — Get detailed info about a specific metric by entity and field name
-- `search_model` — Search for metrics across the model by name
+- `search_model` — Search for metrics across the model by name (use `search_mode: EXACT` for known names, `OR` for broad discovery)
 - `list_entities` — List entities to identify where to anchor new metrics
 
 ---
