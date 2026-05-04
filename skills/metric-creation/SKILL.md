@@ -225,25 +225,30 @@ Search for topics like: "metrics", "aggregation", "derived metrics", "fixed grou
   - Nested grouping: `orders.revenue GROUP BY (*, orders.order_date)` instead of `SUM(...) GROUP BY (*, ...)`
   - Derived arithmetic: `orders.revenue - orders.cost` instead of `SUM(price) - SUM(cost)`
   This keeps definitions DRY and ensures changes propagate automatically.
-- **For cross-entity distinct counts, use the related entity's `count` metric — but always with a
-  join-forcing filter.** The pattern is `related_entity.count FILTER (WHERE source_entity.entity_key
-  IS NOT NULL)`. The filter referencing a per-row non-null column on the source entity forces
-  Honeydew to perform an actual join. Without that filter, the optimizer prunes the join in
-  standalone queries and the metric returns the related entity's full standalone total — not the
-  filtered subset the metric description promises. Example: prefer
-  `users.count FILTER (WHERE bookings.booking_id IS NOT NULL)` over `COUNT(DISTINCT bookings.user_id)`.
-  Watch out: `related_entity.count FILTER (WHERE source_entity.count > 0)` does NOT work — that
-  predicate evaluates as a global scalar, not per-row.
-- **Reuse existing calculated attributes — including in filter predicates.** If you created a
-  calculated attribute, reference it by name rather than inlining its SQL. This applies in two
-  places:
+- **For cross-entity counts, clarify intent before choosing a pattern.**
+  When a user asks for "number of users who made a booking" or similar, confirm whether they want:
+  1. **Filtered count** — count of related-entity members that appear in the source (e.g. users who
+     have at least one booking). Use `related_entity.count FILTER (WHERE source_entity.entity_key
+     IS NOT NULL)`. The filter referencing a per-row column on the source entity forces Honeydew to
+     join the entities. Without it, the optimizer may prune the join and return the related entity's
+     full total instead of the filtered subset.
+     Example: `users.count FILTER (WHERE bookings.booking_id IS NOT NULL)`
+  2. **Simple count** — just the total count of the related entity with no filtering. Use
+     `related_entity.count` directly, or `COUNT(DISTINCT source_entity.fk_column)` as a raw fallback.
+- **Compose from existing model objects — attributes and metrics alike.** Honeydew's semantic
+  layer is object-oriented: attributes and metrics are named, reusable building blocks. When
+  building a new metric, prefer referencing existing objects over inlining raw SQL. This applies
+  everywhere:
   - As an aggregation input: `SUM(orders.net_price)` instead of `SUM(orders.price - orders.discount)`
-    when `orders.net_price` is a calc attr that already encodes that subtraction.
+    when `orders.net_price` is a calculated attribute that already encodes that subtraction.
   - As a FILTER predicate: `bookings.count FILTER (WHERE bookings.is_cancelled)` instead of
     `bookings.count FILTER (WHERE bookings.status = 'cancelled')` when `bookings.is_cancelled` is
-    a boolean calc attribute that already encodes the predicate. The named-attribute form is
-    cleaner, propagates definition changes, and reads as the business concept ("is cancelled")
-    rather than the SQL implementation.
+    a boolean attribute. Likewise, `orders.revenue FILTER (WHERE orders.is_promotional)` reuses the
+    `is_promotional` attribute rather than repeating its SQL condition.
+  - As a metric operand: `orders.revenue - orders.cost` reuses two existing metrics rather than
+    re-deriving `SUM(price) - SUM(cost)` from raw columns.
+  Referenced objects propagate definition changes automatically and express business concepts
+  rather than SQL implementation details.
 - **Never use COUNT(\*).** Use the entity's built-in count metric (e.g., `entity.count`) when available.
   Otherwise, use `COUNT(entity.key_field)` on the entity's key column.
 - **Name metrics after the business concept**, not the SQL. `gross_margin` is better than `revenue_minus_cogs_divided_by_revenue`.
@@ -270,11 +275,11 @@ Call `get_data_from_fields` with:
 
 - `metrics`: `["<entity>.<metric_name>"]`
 
-**For cross-entity distinct count metrics specifically — always validate the standalone query.**
-The named-metric form (`related_entity.count FILTER ...`) can return wildly wrong values if the
-join-forcing filter is missing or malformed. Run `get_data_from_fields` with just the metric
-(no other attributes/metrics) and confirm the value matches the metric's description ("users
-with at least one booking" — should be smaller than total users, not equal to it).
+**For filtered cross-entity count metrics** — run `get_data_from_fields` with just the new
+metric and compare it against `related_entity.count` standalone. If you built a filtered count
+(e.g. users who have at least one booking), the result should be less than or equal to the
+related entity's total. If the two values are equal, the join-forcing filter isn't working as
+intended — revisit the filter expression.
 
 ---
 

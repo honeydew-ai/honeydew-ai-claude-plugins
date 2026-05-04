@@ -80,40 +80,31 @@ SUM(orders.amount) GROUP BY (orders.customer_id)
 SUM(orders.amount) GROUP BY (*, orders.order_date)
 ```
 
-### Cross-entity distinct counts
+### Cross-entity counts
 
-When the question is "how many distinct X are reachable from this set" and X is a
-related entity, prefer the related entity's `count` metric over `COUNT(DISTINCT)` on the
-foreign-key column. **Crucially: add a `FILTER` that references a non-null column on the
-source entity** (typically the source entity's primary key). Without that filter, the
-Honeydew optimizer may prune the join entirely when the metric is queried on its own,
-and the result becomes the related entity's standalone total — not what the metric
-description promises.
+When the goal is to count members of a related entity that appear in the source (e.g.
+"users who made a booking"), use the related entity's `count` metric with a `FILTER` that
+references a per-row column on the source entity. This forces Honeydew to join the two
+entities. Without it, the optimizer may prune the join and return the related entity's
+full total.
 
 ```sql
--- Preferred: filter forces the join, semantic always matches description
+-- Filtered count: users who have at least one booking
 users.count FILTER (WHERE bookings.booking_id IS NOT NULL)
-properties.count FILTER (WHERE bookings.booking_id IS NOT NULL)
 
--- DON'T do this — looks right, breaks under standalone queries
-users.count                            -- optimizer prunes bookings join → returns ALL users (124K), not just users with bookings (54K)
+-- Simple count: total users (also valid — use when no filtering is intended)
+users.count
 
--- DON'T do this either — the predicate evaluates as a global scalar, not per-row
-users.count FILTER (WHERE bookings.count > 0)   -- bookings.count > 0 is true globally, filter is no-op
-
--- Raw fallback when the named-metric form isn't viable
+-- Raw fallback when no relation exists between the entities
 COUNT(DISTINCT bookings.user_id)
 ```
 
-**Why the filter matters:** in `users.count FILTER (WHERE bookings.booking_id IS NOT NULL)`,
-the FILTER predicate references `bookings.booking_id` (a per-row column on bookings).
-This forces Honeydew to actually join users to bookings on the relation key — the SQL
-becomes `LEFT JOIN bookings ON bookings.user_id = users.user_id`, then filter, then count
-distinct users. The result correctly equals "users with at least one booking."
+**Why the filter matters:** the FILTER predicate references `bookings.booking_id` (a
+per-row column on bookings), which forces Honeydew to join users to bookings before
+counting. The result equals "users with at least one booking" — a subset of total users.
 
-The named form requires a relation between the source entity and the target entity. If
-the relation isn't there or doesn't carry the join semantics you need, fall back to the
-explicit `COUNT(DISTINCT)` form.
+The named form requires a relation between the entities. If no relation exists, use
+`COUNT(DISTINCT)` instead.
 
 ## Text Summarization
 
