@@ -101,7 +101,7 @@ sql: |-
 To modify an existing metric:
 
 1. Use `get_entity` with the entity name to find the metric and its details.
-2. Use `search_model` to find the metric's `object_key`.
+2. Use `search_model` (with `search_mode: EXACT`) to find the metric's `object_key`.
 3. Call `update_object` with the full updated YAML (`yaml_text`) and the `object_key`.
 
 > **Minimal diff rule:** When updating, preserve the existing field order and formatting from the current YAML. Only change the fields you need to modify. Objects are versioned in git, so unnecessary reordering or reformatting creates noisy diffs.
@@ -112,7 +112,7 @@ After a successful `create_object` or `update_object` call, the response include
 
 ### delete_object (for deletion)
 
-1. Use `search_model` to find the metric's `object_key`.
+1. Use `search_model` (with `search_mode: EXACT`) to find the metric's `object_key`.
 2. Call `delete_object` with that `object_key`.
 
 ---
