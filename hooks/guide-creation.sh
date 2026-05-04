@@ -8,6 +8,9 @@ yaml_text=$(printf '%s' "$input" | jq -r '.tool_input.yaml_text // .tool_input.e
 skill_hint=""
 
 case "$tool_name" in
+  *create_context_item*|*update_context_item*)
+    skill_hint="honeydew-ai:context-item-creation"
+    ;;
   *import_tables*)
     skill_hint="honeydew-ai:entity-creation"
     ;;
@@ -33,5 +36,5 @@ esac
 if [ -n "$skill_hint" ]; then
   printf '{"systemMessage": "You are about to create or modify a Honeydew object. If you have not already loaded the relevant skill, invoke the Skill tool with skill '"'"'%s'"'"' BEFORE proceeding. The skill contains critical guidance on required fields, naming conventions, and correct YAML structure. After creation, always run the '"'"'honeydew-ai:validation'"'"' skill to verify the object works correctly."}\n' "$skill_hint"
 else
-  printf '%s\n' '{"systemMessage": "You are about to create or modify a Honeydew object. If you have not already loaded the relevant skill, invoke the appropriate Skill tool BEFORE proceeding. Available skills: honeydew-ai:metric-creation (metrics), honeydew-ai:attribute-creation (attributes), honeydew-ai:entity-creation (entities), honeydew-ai:relation-creation (relations), honeydew-ai:domain-creation (domains). After creation, always run honeydew-ai:validation."}'
+  printf '%s\n' '{"systemMessage": "You are about to create or modify a Honeydew object. If you have not already loaded the relevant skill, invoke the appropriate Skill tool BEFORE proceeding. Available skills: honeydew-ai:metric-creation (metrics), honeydew-ai:attribute-creation (attributes), honeydew-ai:entity-creation (entities), honeydew-ai:relation-creation (relations), honeydew-ai:domain-creation (domains), honeydew-ai:context-item-creation (context items). After creation, always run honeydew-ai:validation."}'
 fi

@@ -60,6 +60,8 @@ Use the Honeydew MCP tools to interact with the model.
 
 ### Agents & Context
 
+Honeydew has two layers: the **semantic layer** (entities, metrics, attributes, relations, domains — the data model and business logic such as metric calculations) and the **context layer** (agents and their associated context items — instructions, skills, knowledge, and memory — that shape how the AI analyst behaves).
+
 - `list_agents` — List all agents with their names, descriptions, domains, and context references
 - `get_agent` — Get detailed info for a specific agent (domain, context items, welcome message, sample questions)
 - `list_context_items` — List all context items with their types, names, titles, and subtypes
