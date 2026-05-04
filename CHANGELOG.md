@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [1.0.3] - 2026-05-03
+
+### Added
+
+- **context-item-creation skill** — new skill guiding creation of instructions, skills, knowledge pointers, and memory events; includes strong guidance on the semantic-layer boundary and folder-based organization for agent scoping
+
 ## [1.0.2] - 2026-04-25
 
 ### Added

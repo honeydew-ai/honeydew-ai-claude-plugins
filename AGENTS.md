@@ -3,10 +3,11 @@
 ## Repo Structure
 
 ```
-skills/                          # All 9 skills (single honeydew-ai plugin)
+skills/                          # All 10 skills (single honeydew-ai plugin)
   filtering/
   query/
   attribute-creation/
+  context-item-creation/
   domain-creation/
   entity-creation/
   metric-creation/
@@ -40,6 +41,21 @@ When releasing a new version, update **all** of these files:
 8. `.github/plugin/plugin.json` — `version`
 9. `.codex-plugin/plugin.json` — `version`
 10. `gemini-extension.json` — `version`
+
+## New Skill Checklist
+
+When adding a new skill, update **all** of these:
+
+1. `skills/<skill-name>/SKILL.md` — create the skill with YAML frontmatter (`name`, `description`)
+2. `.cursor/skills/`: `ln -s ../../skills/<skill-name>/ .cursor/skills/<skill-name>`
+3. `.gemini/skills/`: `ln -s ../../skills/<skill-name> .gemini/skills/<skill-name>`
+4. `.claude-plugin/plugin.json` — add skill entry
+5. `.cursor-plugin/plugin.json` — add skill entry
+6. `.github/plugin/plugin.json` — add skill to `skills` array
+7. `.codex-plugin/plugin.json` — add skill entry
+8. `README.md` — add row to the Available Skills table and update the skill count
+9. `AGENTS.md` — update repo structure listing and skill count
+10. Bump the version (see Version Bump Checklist)
 
 ## Skill Conventions
 
