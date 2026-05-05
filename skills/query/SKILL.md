@@ -261,6 +261,10 @@ Returns:
 - Data results from that step
 - The SQL generated for that step
 
+References in the response can be expanded for deeper inspection:
+- Field references (e.g. `entity.field_name`) → `get_field` — shows the full definition, useful if the user wants to understand how a metric or attribute is calculated
+- Context item references → `get_context_item` — shows the instruction or knowledge applied during that step
+
 ### Example Questions
 
 **Simple natural language:**
