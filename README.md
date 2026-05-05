@@ -96,11 +96,12 @@ For coding agents that support MCP, configure the [Honeydew MCP server](https://
 
 ## Available Skills
 
-The `honeydew-ai` plugin includes 10 skills:
+The `honeydew-ai` plugin includes 11 skills:
 
 | Skill | Description |
 |-------|-------------|
 | **model-exploration** | Explore the semantic model — list entities, search fields, inspect relationships, and discover warehouse tables |
+| **workspace-branch** | Manage workspaces and branches — set session context, create/delete branches, review branch history, and open pull requests |
 | **entity-creation** | Create entities — the foundational business concepts built from data warehouse tables |
 | **relation-creation** | Define relationships between entities with join types, cardinality, and complex join conditions |
 | **attribute-creation** | Create calculated attributes (dimensions) — per-row virtual columns defined with SQL expressions |

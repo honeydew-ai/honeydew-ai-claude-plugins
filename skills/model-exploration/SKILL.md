@@ -10,7 +10,7 @@ description: Use when exploring Honeydew semantic layer, discovering entities/fi
 Before ANY Honeydew work, set up your session and discover the model:
 
 **Step 0: Set workspace and branch**
-Use `get_session_workspace_and_branch` to check the current session context. If no workspace/branch is set, use `list_workspaces`, `list_workspace_branches`, and `set_session_workspace_and_branch` to select the right workspace and branch. All subsequent tool calls use this context.
+Use `get_session_workspace_and_branch` to check the current session context. If no workspace/branch is set, use `list_workspaces`, `list_workspace_branches`, and `set_session_workspace_and_branch` to select the right workspace and branch. All subsequent tool calls use this context. See the `workspace-branch` skill for the full tool reference including branch creation, deletion, history, and PRs.
 
 **Step 1: List entities**
 Use the `list_entities` MCP tool to see all entities in the model.
@@ -33,11 +33,16 @@ Use the Honeydew MCP tools to interact with the model.
 
 ### Session & Workspace
 
-- `list_workspaces` - List all available workspaces. Returns the workspace name and the data warehouse type (`snowflake`, `databricks`, or `bigquery`). Use the warehouse type to inform SQL dialect choices in semantic model implementation.
-- `list_workspace_branches` - List all branches available for a workspace. Requires `workspace_id` (the workspace name).
-- `get_session_workspace_and_branch` - Get the workspace and branch set for the current session.
-- `set_session_workspace_and_branch` - Set the workspace and branch to use for the current session. All subsequent tool calls use this workspace and branch. Requires `workspace_id`; optional `branch_id` (omit to use the production branch, which is the default).
-- `create_workspace_branch` - Create a new branch for an existing workspace. The branch is created from the current state of the workspace's `prod` branch. The session automatically switches to the new branch. Requires `workspace_id` and `branch_name`.
+See the `workspace-branch` skill for the full reference. Key tools:
+
+- `list_workspaces` - List all available workspaces (name + warehouse type)
+- `list_workspace_branches` - List branches for a workspace
+- `get_session_workspace_and_branch` - Get current session workspace/branch
+- `set_session_workspace_and_branch` - Set session workspace/branch
+- `create_workspace_branch` - Create a branch (session switches automatically)
+- `delete_workspace_branch` - Delete a branch (destructive — confirm with user first)
+- `get_branch_history` - Get change history for the current branch
+- `create_pr_for_working_branch` - Create a PR for the current working branch
 
 **Typical flow:**
 
@@ -81,7 +86,8 @@ Honeydew has two layers: the **semantic layer** (entities, metrics, attributes, 
 
 ### AI-Powered Queries
 
-- `ask_deep_analysis_question` - Natural language question (simple or complex) → agentic analysis and results
+- `ask_deep_analysis_question` - Natural language question (simple or complex) → agentic analysis and results. Use `conversation_id` for follow-up questions.
+- `abort_deep_analysis_question` - Abort an in-progress deep analysis. Requires `conversation_id`.
 
 ## Example Usage
 

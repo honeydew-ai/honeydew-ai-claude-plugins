@@ -5,7 +5,7 @@ description: Guides you step-by-step through defining a calculated attribute (di
 
 ## Prerequisites
 
-Before creating attributes, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` (the session switches automatically). See the `model-exploration` skill for the full workspace/branch tool reference.
+Before creating attributes, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` (the session switches automatically). See the `workspace-branch` skill for the full workspace/branch tool reference.
 
 ---
 

@@ -5,7 +5,7 @@ description: Guides you through creating a Honeydew domain — a governance obje
 
 ## Prerequisites
 
-Before creating domains, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` (the session switches automatically). See the `model-exploration` skill for the full workspace/branch tool reference.
+Before creating domains, ensure you are on the correct workspace and branch. Use `get_session_workspace_and_branch` to check the current session context. For development work, create a branch with `create_workspace_branch` (the session switches automatically). See the `workspace-branch` skill for the full workspace/branch tool reference.
 
 ---
 

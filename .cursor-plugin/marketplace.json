@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Honeydew AI plugins for coding agents - skills and tools powered by the Honeydew AI MCP",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "pluginRoot": "."
   },
   "plugins": [
@@ -14,7 +14,7 @@
       "name": "honeydew-ai",
       "source": "./",
       "description": "Skills and tools powered by the Honeydew MCP that help coding agents query data and build semantic models",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": {
         "name": "Honeydew AI",
         "email": "support@honeydew.ai"

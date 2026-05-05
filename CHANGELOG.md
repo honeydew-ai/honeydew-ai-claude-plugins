@@ -2,6 +2,18 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [1.0.5] - 2026-05-05
+
+### Added
+
+- **workspace-branch skill** — new skill covering all workspace and branch management tools: listing workspaces/branches, setting session context, creating and deleting branches, reviewing branch history, and creating pull requests. Includes new MCP tools `delete_workspace_branch`, `get_branch_history`, and `create_pr_for_working_branch`.
+- **abort_deep_analysis_question** — added to the model-exploration skill's AI-Powered Queries section
+
+### Changed
+
+- **model-exploration skill** — condensed Session & Workspace section to reference the new `workspace-branch` skill; updated tool listing to include all new branch management tools
+- **All creation and query skills** — updated workspace/branch prerequisite reference from `model-exploration` to `workspace-branch`
+
 ## [1.0.4] - 2026-05-05
 
 ### Changed
