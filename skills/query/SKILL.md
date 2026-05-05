@@ -201,7 +201,13 @@ Returns a `conversation_id` immediately.
 
 **Step 2 — poll until done:**
 
-Call `monitor_analysis` repeatedly with the `conversation_id` until `status` is `"DONE"`. Each call returns only new messages since the last call. Progress messages include `step_start` and `step_insight` entries, each carrying a `step_id` (e.g. `"STEP/5"`). Summarize key progress for the user while waiting.
+Call `monitor_analysis` repeatedly with the `conversation_id` until `status` is `"DONE"`. Each call returns only new messages since the last call.
+
+**Report progress on every poll that returns new content** — don't go silent between polls. For each batch of messages:
+
+- On `interpretation` / `plan`: tell the user what the analysis intends to do
+- On each `step_insight`: post a one-liner with what was found — e.g. *"Step 2 done: 58 menu items found, top is The King Combo at $431M"* — so the user can follow along and catch a misdirected analysis early
+- On `step_start` with no prior insight yet: optionally note what step is starting
 
 When `status` is `"DONE"`, the final user-facing report is in the `responses` array.
 
@@ -210,7 +216,19 @@ When `status` is `"DONE"`, the final user-facing report is in the `responses` ar
 initiate_analysis(question="Analyze revenue by cuisine type", agent="my_agent")
 → { conversation_id: "abc123" }
 
-monitor_analysis(conversation_id="abc123")  # repeat until status == DONE
+# Poll loop — report to user after each call that has new content
+monitor_analysis(conversation_id="abc123")
+→ interpretation + plan received → tell user what the analysis will do
+
+monitor_analysis(conversation_id="abc123")
+→ STEP/0 insight: "Top item is Indian at $1B" → report to user
+
+monitor_analysis(conversation_id="abc123")
+→ STEP/1 insight: "Added % contribution" → report to user
+
+...
+
+monitor_analysis(conversation_id="abc123")
 → { status: "DONE", responses: [{ text: "..." }] }
 ```
 
@@ -325,6 +343,7 @@ This pattern is useful for:
 - **Start with discovery** — always check `list_entities` / `get_entity` before building queries, so you reference real fields
 - **Use structured queries for precision** — when you know the fields, `get_data_from_fields` gives you full control and reproducible results
 - **Use deep analysis for insight** — when the question is about "why" or requires investigating multiple dimensions
+- **Report every step, not just the start** — surface a one-liner per `step_insight` while polling; going silent between the first update and the final result leaves the user blind to what the analysis is actually finding
 - **Explain a prior step** — use `get_analysis_step_details` with the `step_id`; follow up with `get_sql_from_fields` if the user wants SQL (step details do not include SQL)
 - **Paginate large results** — use `limit` and `offset` in `get_data_from_fields` to avoid overwhelming output
 - **Show SQL when debugging** — use `get_sql_from_fields` to inspect the generated query
