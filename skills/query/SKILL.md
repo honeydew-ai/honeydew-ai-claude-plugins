@@ -203,6 +203,15 @@ Returns a `conversation_id` immediately.
 
 Call `monitor_analysis` repeatedly with the `conversation_id` until `status` is `"DONE"`. Each call returns only new messages since the last call.
 
+**`stop_reason` values — what they mean:**
+
+| `stop_reason` | Meaning | What to do |
+|---------------|---------|------------|
+| `null` | Still running | Keep polling |
+| `"DONE"` | Finished normally | Read `responses` array for the final report |
+| `"ASK"` | Analysis paused to ask a clarifying question | Read `responses` for the question, answer with a new `initiate_analysis` on the same `conversation_id` |
+| `"ABORTED"` | This execution run was stopped | **Not terminal.** Conversation state is preserved — continue with a new `initiate_analysis` on the same `conversation_id` |
+
 **Report progress when it's meaningful to the user** — not every poll, but not silently either. Use judgement:
 
 - On `interpretation` / `plan`: tell the user what the analysis intends to do
@@ -246,6 +255,12 @@ initiate_analysis(
   conversation_id="abc123"
 )
 ```
+
+### Aborting and Resuming an Analysis
+
+Aborting stops the current execution run but preserves all conversation state — groups already computed remain available. Resume by sending a new `initiate_analysis` with the same `conversation_id`; the analysis will reuse prior results rather than restarting from scratch.
+
+Always abort when the user asks. Initiating an abort on your own (without the user asking) is reserved for extreme cases where the analysis is clearly going badly off track — normally let it finish and redirect via a follow-up question.
 
 ### Explaining a Prior Analysis Step
 
