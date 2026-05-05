@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [1.0.4] - 2026-05-05
+
+### Changed
+
+- **metric-creation skill** — expanded named-metric composition guidance (FILTER, GROUP BY, derived arithmetic); added cross-entity count pattern with intent-clarification flow; improved distinct count example to distinguish simple count from join-forcing filter; fixed SKILL.md and reference.md for accuracy and clarity
+
 ## [1.0.3] - 2026-05-03
 
 ### Added
