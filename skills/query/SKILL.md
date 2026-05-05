@@ -65,7 +65,7 @@ User asks a data question
     │
     ├─► User asks to explain / drill into a step from a prior analysis?
     │       └─► get_analysis_step_details (step_id from monitor_analysis)
-    │           NOTE: does NOT return SQL — use get_sql_from_fields for that
+    │           Returns semantic query, data results, and SQL for that step
     │
     ├─► Do you know the exact field names?
     │       │
@@ -258,8 +258,7 @@ Returns:
 - The semantic query used (attributes, metrics, filters)
 - Context resolved (which entities/fields Honeydew selected)
 - Data results from that step
-
-**Does NOT return SQL.** To get the SQL for a step, take the attributes and metrics from the step details and call `get_sql_from_fields` with those same fields.
+- The SQL generated for that step
 
 ### Example Questions
 
@@ -344,7 +343,7 @@ This pattern is useful for:
 - **Use structured queries for precision** — when you know the fields, `get_data_from_fields` gives you full control and reproducible results
 - **Use deep analysis for insight** — when the question is about "why" or requires investigating multiple dimensions
 - **Report meaningful progress, not every step** — surface a one-liner when a step produces a substantive finding; skip internal retries and error-recovery steps the user doesn't need to see
-- **Explain a prior step** — use `get_analysis_step_details` with the `step_id`; follow up with `get_sql_from_fields` if the user wants SQL (step details do not include SQL)
+- **Explain a prior step** — use `get_analysis_step_details` with the `step_id`; the response includes the semantic query, data results, and SQL for that step
 - **Paginate large results** — use `limit` and `offset` in `get_data_from_fields` to avoid overwhelming output
 - **Show SQL when debugging** — use `get_sql_from_fields` to inspect the generated query
 - **Reference fields correctly** — always use `entity.field_name` syntax in field parameters
