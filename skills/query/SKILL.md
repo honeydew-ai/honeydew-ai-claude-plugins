@@ -224,7 +224,7 @@ monitor_analysis(conversation_id="abc123")
 → step insight received → report: "Step #1: Top item is Indian at $1B"
 
 monitor_analysis(conversation_id="abc123")
-→ step insight received → report: "% contribution: Added % contribution"
+→ step insight received → report: "% contribution: Indian leads at 34%, followed by Italian at 22%"
 
 ...
 
