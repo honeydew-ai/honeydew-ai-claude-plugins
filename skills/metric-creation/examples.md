@@ -77,12 +77,6 @@ sql: COUNT(orders.order_id)
 
 ## Distinct count — distinct customers across orders
 
-When counting distinct values of a foreign key, prefer the related entity's `count` metric
-**combined with a join-forcing filter** that references a non-null column on the source
-entity. Without the filter, the Honeydew optimizer can prune the join in standalone
-queries and return the related entity's full standalone total instead of the filtered
-subset described by the metric.
-
 **Preferred form** — named-metric with join-forcing filter:
 
 ```yaml
@@ -120,10 +114,13 @@ prunes the orders join entirely:
 sql: customers.count   # standalone query returns ALL customers, not just customers-with-orders
 ```
 
-**Don't do this either** — `customers.count > 0` evaluates as a global scalar, not per-row:
+**Don't do this either** — `orders.count` inside `FILTER` becomes a HAVING condition
+evaluated at the outer query's grouping level, not per-customer. If the query groups by
+month, it asks "does this month have any orders?" — almost always true. The filter is a
+no-op and all customers are returned, not just those with orders:
 
 ```yaml
-sql: customers.count FILTER (WHERE orders.count > 0)   # filter is always true, no-op
+sql: customers.count FILTER (WHERE orders.count > 0)
 ```
 
 ## Fixed Grouping — daily revenue share
