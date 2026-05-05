@@ -12,7 +12,7 @@ Skills and tools powered by the [Honeydew MCP](https://honeydew.ai/docs/integrat
 
 ## Prerequisites
 
-- A coding agent that supports plugins/skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://developers.openai.com/codex/cli), [Cursor](https://cursor.com), or any agent with MCP support)
+- A coding agent that supports plugins/skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Codex](https://developers.openai.com/codex/cli), [Cursor](https://cursor.com), [GitHub Copilot CLI](https://githubnext.com/projects/copilot-cli), [Gemini CLI](https://github.com/google-gemini/gemini-cli), or any agent with MCP support)
 - A Honeydew AI workspace with the [Honeydew MCP server](https://honeydew.ai/docs/integration/mcp) configured
 
 ## Installation
@@ -28,7 +28,13 @@ Add this marketplace to Claude Code:
 Then install the plugin:
 
 ```
-/plugin install honeydew-ai@honeydew-ai-coding-agents-plugins
+/plugin install honeydew-ai@honeydew-ai-claude-plugins
+```
+
+Then reload plugins to activate:
+
+```
+/reload-plugins
 ```
 
 ### Codex
@@ -52,10 +58,37 @@ If the marketplace was already added before this repo exposed the Codex wrapper 
 codex plugin marketplace upgrade honeydew-ai-coding-agents-plugins
 ```
 
+### GitHub Copilot CLI
+
+Add this marketplace to Copilot CLI:
+
+```
+/plugin marketplace add honeydew-ai/honeydew-ai-coding-agents-plugins
+```
+
+Then install the plugin:
+
+```
+/plugin install honeydew-ai@honeydew-ai-github-copilot-plugins
+```
+
 ### Cursor
 
-1. Go to Cursor Settings -> Rules, Skills, Subagents and click on **+New** next to Rules.
-2. Select **Add from GitHub** and enter the URL of this repository.
+1. In your team or organization settings, go to [cursor.com/dashboard/plugins](https://cursor.com/dashboard/plugins) (or click **Plugins** on the left side menu).
+2. Scroll down to **Team Marketplaces** and click **Add Marketplace** (or select an existing one).
+3. Within the Marketplace, click **Add Plugin**, paste `https://github.com/honeydew-ai/honeydew-ai-coding-agents-plugins`, and click **Add 1 plugin**.
+4. Optionally, enable **auto-refresh** to get updates automatically.
+5. Go back to the plugins page, search for the Honeydew plugin, and click **Add**.
+
+### Gemini CLI
+
+Install the Honeydew skills:
+
+```bash
+gemini skills install \
+    https://github.com/honeydew-ai/honeydew-ai-coding-agents-plugins.git \
+    --path .gemini/skills
+```
 
 ### Other Coding Agents
 
