@@ -257,6 +257,7 @@ When the user asks to explain, review, or drill into a specific step (e.g., "how
 Returns:
 - The semantic query used (attributes, metrics, filters)
 - Context resolved (which entities/fields Honeydew selected)
+- Context items used (if any instructions or knowledge were applied)
 - Data results from that step
 - The SQL generated for that step
 
