@@ -2,6 +2,12 @@
 
 All notable changes to the Honeydew AI Plugins for Coding Agents are documented in this file.
 
+## [1.0.6] - 2026-05-05
+
+### Changed
+
+- **query skill** — updated deep analysis section to reflect the async `initiate_analysis` + `monitor_analysis` two-step pattern (replacing `ask_deep_analysis_question`); added `get_analysis_step_details` for explaining prior analysis steps; added guidance on meaningful progress reporting during polling
+
 ## [1.0.5] - 2026-05-05
 
 ### Added
