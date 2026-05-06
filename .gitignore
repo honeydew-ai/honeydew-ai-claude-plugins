@@ -26,6 +26,9 @@ venv/
 tmp/
 temp/
 
+# Release artifacts
+dist/
+
 # Agent settings
 **/settings.local.json
 
