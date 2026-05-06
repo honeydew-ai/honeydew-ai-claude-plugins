@@ -215,8 +215,8 @@ Call `monitor_analysis` repeatedly with the `conversation_id` until `status` is 
 **Report progress when it's meaningful to the user** — not every poll, but not silently either. Use judgement:
 
 - On `interpretation` / `plan`: tell the user what the analysis intends to do
-- On every `step_insight` with a substantive finding: post a one-liner labelled with the step description (if available) or "Step #N" (1-based) — e.g. *"Step #1: 58 menu items found, top is The King Combo at $431M"*
-- If several steps have passed without a user-facing update, post a brief aggregate — e.g. *"Completed 3 steps: analyzed pricing by neighbourhood, computed averages, filtered outliers"* — so the user knows progress is being made
+- On every `step_insight` with a substantive finding: post a one-liner describing what was found — e.g. *"58 menu items found, top is The King Combo at $431M"*
+- If several steps have passed without a user-facing update, post a brief aggregate — e.g. *"Analyzed pricing by neighbourhood, computed averages, filtered outliers"* — so the user knows progress is being made
 - On internal errors, retries, or backtracking steps: skip reporting — the user doesn't need to know the agent corrected itself, only that meaningful progress is being made
 
 When `status` is `"DONE"`, the final user-facing report is in the `responses` array.
@@ -231,7 +231,7 @@ monitor_analysis(conversation_id="abc123")
 → interpretation + plan received → tell user what the analysis will do
 
 monitor_analysis(conversation_id="abc123")
-→ step insight received → report: "Step #1: Top item is Indian at $1B"
+→ step insight received → report: "Top item is Indian at $1B"
 
 monitor_analysis(conversation_id="abc123")
 → step insight received → report: "% contribution: Indian leads at 34%, followed by Italian at 22%"
@@ -351,6 +351,14 @@ This pattern is useful for:
 - **Exploring filter values** — find out what values exist before writing a filter expression (see the **filtering** skill)
 - **Validating a new attribute** — after creating a calculated attribute, check its distinct output values to confirm the logic is correct (see the **attribute-creation** skill)
 - **Understanding data distribution** — see how data is spread across categories
+
+---
+
+## Presenting Results
+
+Present analysis results clearly — format tables, highlight key numbers, and surface what's notable, unexpected, or actionable.
+
+If your environment has visualization tools, render visualizations when they would reveal patterns faster than text — e.g. trends, distributions, or ranked lists of 5+ items. Skip it for 2–3 numbers or a single yes/no conclusion. When it might help but isn't a clear win, offer rather than render.
 
 ---
 
