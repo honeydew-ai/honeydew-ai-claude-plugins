@@ -194,7 +194,7 @@ Deep analysis is a two-step async process:
 Call `initiate_analysis` with:
 
 - `question` (required): the analysis question
-- `agent` (required for new conversations): agent name — use `list_agents` to discover available agents and their associated domains
+- `agent` (required for new conversations): agent name — use `list_agents` to discover available agents and their associated domains. **Workspace and branch must be set before calling `list_agents`** (agents are workspace-scoped)
 - `conversation_id` (optional): ID from a previous call, for follow-up questions
 
 Returns a `conversation_id` immediately. New conversations also return a `ui_url` — **always display this URL to the user** so they can follow the analysis in the Honeydew application.
