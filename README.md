@@ -118,6 +118,16 @@ The `honeydew-ai` plugin includes 11 skills:
 - Databricks
 - BigQuery
 
+## Building a Release
+
+To produce a zip for upload to the claude.ai private marketplace:
+
+```bash
+./scripts/build-release-claude.sh
+```
+
+This generates `dist/honeydew-ai-claude-<version>.zip` from the repo root. The zip contains `.claude-plugin/plugin.json`, `.mcp.json`, `hooks/`, `assets/`, and all skill markdown files — the layout claude.ai expects.
+
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE) for details.

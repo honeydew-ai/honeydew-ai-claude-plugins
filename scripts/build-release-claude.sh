@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build a release zip for upload to the claude.ai private marketplace.
 #
-# Produces dist/honeydew-ai-<version>.zip from the repo root plugin, with
+# Produces dist/honeydew-ai-claude-<version>.zip from the repo root plugin, with
 # the .claude-plugin/ directory and other plugin files at the zip root
 # (the layout claude.ai expects).
 #
@@ -91,7 +91,7 @@ fi
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"
 
-zip_path="${OUT_DIR}/honeydew-ai-${version}.zip"
+zip_path="${OUT_DIR}/honeydew-ai-claude-${version}.zip"
 echo "==> Building ${zip_path}"
 
 stage="$(mktemp -d)"
