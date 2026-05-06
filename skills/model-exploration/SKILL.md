@@ -84,36 +84,13 @@ Honeydew has two layers: the **semantic layer** (entities, metrics, attributes, 
 - `get_data_from_fields` - Execute a query from field parameters and return data (supports `limit` and `offset` for pagination)
 - `get_sql_from_fields` - Generate SQL from field parameters without executing
 
-### AI-Powered Queries
-
-- `ask_deep_analysis_question` - Natural language question (simple or complex) → agentic analysis and results. Use `conversation_id` for follow-up questions.
-- `abort_deep_analysis_question` - Abort an in-progress deep analysis. Requires `conversation_id`.
-
 ## Example Usage
 
-### Query API Decision Flow
+### Structured Query Execution
 
-```
-User Request
-    │
-    ├─► Exact field names known? Want structured query?
-    │       └─► YES → get_data_from_fields (deterministic, structured)
-    │
-    └─► Plain English / natural language / "why" / investigation?
-            └─► ask_deep_analysis_question (any complexity)
-```
+Use `get_data_from_fields` to run structured queries in the context of model exploration — e.g. spot-check field values, verify counts, check a metric's computed value, or sample rows after discovering fields.
 
-| Tool                         | Use When                                    | Example Request                                       |
-| ---------------------------- | ------------------------------------------- | ----------------------------------------------------- |
-| `get_data_from_fields`       | Known fields, programmatic                  | "Get total_revenue by month for 2021"                 |
-| `ask_deep_analysis_question` | Plain English questions, trends, root cause | "Show me revenue by city last 2 years"                |
-| `ask_deep_analysis_question` | Complex analysis, "why", multi-step         | "Find revenue drops and find contributing factors"    |
-
----
-
-### get_data_from_fields (Primary - Known Fields)
-
-Call `get_data_from_fields` with field parameters:
+Call `get_data_from_fields` with:
 
 - `attributes`: `["order_header.order_year_month"]`
 - `metrics`: `["order_header.total_revenue"]`
@@ -123,22 +100,13 @@ Call `get_data_from_fields` with field parameters:
 - `limit`: max rows to return (default: 100)
 - `offset`: rows to skip (for pagination)
 
----
-
 ### get_sql_from_fields (SQL Preview)
 
-Same field parameters as `get_data_from_fields`, but returns the generated SQL without executing it.
+Same field parameters as `get_data_from_fields`, but returns the generated SQL without executing it — useful for investigating how Honeydew resolves a specific query.
 
----
+### Analysis Questions
 
-### ask_deep_analysis_question (Natural Language Queries)
-
-Call with:
-
-- `question`: `"Show me revenue by city for the last 2 years"` (simple) or `"Look at last 5 years, identify revenue drops and find contributing factors"` (complex)
-- `conversation_id`: `"conv_123"` (optional, for follow-up questions)
-
-**Returns:** markdown analysis report, data, suggested follow-up questions, conversation_id
+For natural language questions, trends, "why", or multi-step investigation — use the **query** skill (`initiate_analysis` + `monitor_analysis`).
 
 ---
 
