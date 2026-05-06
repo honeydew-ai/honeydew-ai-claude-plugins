@@ -354,6 +354,14 @@ This pattern is useful for:
 
 ---
 
+## Presenting Results
+
+Present analysis results clearly — format tables, highlight key numbers, and surface what's notable, unexpected, or actionable.
+
+If your environment has visualization tools, render visualizations when they would reveal patterns faster than text — e.g. trends, distributions, or ranked lists of 5+ items. Skip it for 2–3 numbers or a single yes/no conclusion. When it might help but isn't a clear win, offer rather than render.
+
+---
+
 ## Best Practices
 
 - **Start with discovery** — always check `list_entities` / `get_entity` before building queries, so you reference real fields
@@ -364,4 +372,3 @@ This pattern is useful for:
 - **Paginate large results** — use `limit` and `offset` in `get_data_from_fields` to avoid overwhelming output
 - **Show SQL when debugging** — use `get_sql_from_fields` to inspect the generated query
 - **Reference fields correctly** — always use `entity.field_name` syntax in field parameters
-- **Present results clearly** — format tables, highlight key numbers, and summarize the takeaway in plain language. If your environment supports charts or visualizations, proactively render them when it would clearly aid understanding (e.g. a bar chart for comparisons, a line chart for trends, a dashboard for multi-result analyses); offer when it might help but isn't obvious. Not all agents have this capability — only do this if you actually can.
