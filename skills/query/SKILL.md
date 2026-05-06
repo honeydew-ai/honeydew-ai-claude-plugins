@@ -1,6 +1,6 @@
 ---
 name: query
-description: Use when the user wants to query, analyze, or explore data through the Honeydew semantic layer. Covers structured queries and multi-step deep analysis.
+description: Use when the user wants to query or analyze data through the Honeydew semantic layer — including natural language analysis questions, deep multi-step investigations, and structured queries. For model/field discovery use the model-exploration skill.
 ---
 
 ## Prerequisites

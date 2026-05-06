@@ -1,6 +1,6 @@
 ---
 name: model-exploration
-description: Use when exploring Honeydew semantic layer, discovering entities/fields, setting up workspace and branch context, or querying data. For creating metrics use metric-creation skill. For creating attributes use attribute-creation skill.
+description: Use when exploring Honeydew semantic layer, discovering entities/fields, setting up workspace and branch context, or running simple structured queries to inspect data. For analysis questions use the query skill. For creating metrics use metric-creation skill. For creating attributes use attribute-creation skill.
 ---
 
 # Instructions
