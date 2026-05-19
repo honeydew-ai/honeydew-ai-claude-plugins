@@ -1,6 +1,6 @@
 {
   "name": "honeydew-ai",
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "Skills and tools powered by the Honeydew MCP that help coding agents query data and build semantic models",
   "author": {
     "name": "Honeydew AI",

@@ -96,7 +96,7 @@ For coding agents that support MCP, configure the [Honeydew MCP server](https://
 
 ## Available Skills
 
-The `honeydew-ai` plugin includes 11 skills:
+The `honeydew-ai` plugin includes 12 skills:
 
 | Skill | Description |
 |-------|-------------|
@@ -111,6 +111,7 @@ The `honeydew-ai` plugin includes 11 skills:
 | **validation** | Mandatory post-creation validation — type-specific sanity checks, cross-validation, and error handling |
 | **query** | Query data using structured YAML perspectives, natural language questions, or multi-step deep analysis |
 | **filtering** | Advanced filtering syntax — comparisons, string matching, date handling, nulls, and full-text search |
+| **conversation-review** | Bulk review past analysis conversations — categorize user feedback, build action items, and apply semantic/context layer improvements on a branch |
 
 ## Supported Data Warehouses
 
