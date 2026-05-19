@@ -40,6 +40,15 @@ Paginate with `offset` until you have covered the desired time window or convers
 
 **Filter to conversations with feedback.** Skip conversations with no feedback unless the user explicitly wants to review all conversations.
 
+If a conversation has no feedback or the stored feedback is inaccurate, use `provide_analysis_feedback` to record the correct label before categorizing:
+
+```
+provide_analysis_feedback(conversation_id="abc123", feedback="Data Issue: net revenue metric missing")
+provide_analysis_feedback(conversation_id="def456", feedback="Good")
+```
+
+This keeps the stored feedback in sync with the categorization, so future reviews start from an accurate baseline.
+
 ### 1.2 Read the full conversation when needed
 
 If the feedback text alone is not enough to understand what went wrong, retrieve the full conversation content with `get_stored_conversation`:

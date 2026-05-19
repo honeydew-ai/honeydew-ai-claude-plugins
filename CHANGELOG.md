@@ -7,6 +7,7 @@ All notable changes to the Honeydew AI Plugins for Coding Agents are documented 
 ### Added
 
 - **New `conversation-review` skill** — guides semantic/context layer curators through bulk-reviewing past analysis conversations, categorizing user feedback into actionable improvement areas (missing metrics, wrong calculations, missing context items, etc.), and applying targeted changes to the semantic model or context layer on a branch.
+- **`query` skill: add `get_stored_conversation`** — retrieve the full message history of a past conversation, with optional step-level detail via `with_step_ids`.
 
 ## [1.0.11] - 2026-05-15
 
