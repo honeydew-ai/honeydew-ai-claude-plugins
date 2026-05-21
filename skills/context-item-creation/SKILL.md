@@ -58,6 +58,23 @@ If the information describes *how to compute something*, *what a value means mat
 
 ---
 
+## Before creating: extend or create?
+
+Default to **extending an existing item** rather than creating a sibling, whenever the new fact describes the same domain concept as an existing item.
+
+**The check, before drafting anything:**
+
+1. Run `list_context_items` and scan items whose folder or name touches the new fact's domain.
+2. For each candidate, ask: *does this item describe the same domain concept?* — e.g. the data window, a metric's definition, a policy area, a deletion rule. Different sub-aspects of one concept (start vs end of a window; multiple reasons to exclude rows on the same field; sequential refinements of the same metric) are **one concept**.
+3. If a candidate exists → call `get_context_item`, then `update_context_item` extending it. Broaden the `title` and `description` to reflect the new scope; keep the existing `name` to avoid breaking agent globs that reference it.
+4. Only create a new item when no existing item covers the concept — or when the new fact is genuinely orthogonal (a *different* policy on the same entity, not a refinement of an existing one).
+
+**Smell test for "this should have been an update":** two items in the same folder whose descriptions could be merged into a single coherent paragraph without losing information. Memory events especially are prone to this — a "launch" event and a "sunset" event for the same dataset are bookends of one window, not two independent facts. One memory event with both `from_date` and `to_date` is correct; two events split by sub-aspect is the smell.
+
+Why this matters: each on-demand item is an independent retrieval candidate. Splitting one fact into N items means the model has to retrieve all N to reconstruct the concept, and any one being missed produces a partial-truth answer. One coherent item retrieves once and answers fully.
+
+---
+
 ## MCP Tools
 
 ### create_context_item
@@ -137,6 +154,7 @@ This way, an agent configured with `finance/*` automatically gets all finance co
 - Use the folder to reflect ownership, not to repeat the item type. `finance/use-net-revenue` is good. `instructions/use-net-revenue` is redundant.
 - Name after the concept or rule, not the implementation. `exclude-canceled-orders` is better than `filter-status-not-canceled`.
 - For memory events, name after the event itself, not a generic label. `revenue-redefinition` or `gdpr-rollout` beats `data-change-3`.
+- **For facts that may evolve, prefer concept-scoped names over event-scoped names.** A memory item named `data/launch-may-2023` locks the scope to the launch event; when the dataset later acquires a cutoff date, the narrow name tempts you into a sibling item rather than extending. `data/data-window` or `data/data-coverage` stays accurate as the facts grow. Same principle for instructions: `bookings/revenue-definition` survives a redefinition; an implementation-pinned name like `bookings/use-confirmed-revenue-v2` does not.
 
 ---
 
@@ -227,7 +245,7 @@ Memory items are retrieved on demand when the model judges them relevant to the 
 - `description`: **required** — what this event is about (used for retrieval)
 - prose body: **what happened and why it matters** for data interpretation
 - `from_date`: when the event occurred (point-in-time) or when it started (if a duration)
-- `to_date`: *(optional)* end date for events spanning a period
+- `to_date`: *(optional)* end date for events spanning a period. **Use the `from_date` / `to_date` bookend pattern for windows** — a dataset's data-coverage window, a feature's availability period, an experiment's run dates. Set both bounds on a single item; do not split a window into two "start" and "end" events.
 - `related_objects`: *(optional)* only the fields or entities directly changed or affected by this event — not downstream consumers, not lineage, not entities that happen to join to a relevant one; use an entity reference instead of a field list when the event affects most fields of that entity
 - `labels`: optional tags for grouping
 - `owner`: *(optional)* defaults to the caller
@@ -276,7 +294,7 @@ Search for topics like: "context items", "instructions", "agent context", "memor
 
 4. **Folder by domain, not by type.** `finance/` should contain instructions, skills, knowledge, and events all related to finance. This makes agent glob patterns meaningful.
 
-5. **Check for duplicates before creating.** Run `list_context_items` first. Overlapping or contradictory instructions are worse than none.
+5. **Check for adjacent items, not just duplicates, before creating.** Run `list_context_items` first. Overlapping or contradictory instructions are worse than none — but adjacency matters as much as overlap. If an existing item describes the same domain concept (the data window, a metric's definition, a policy area), extend it rather than create a sibling. See "Before creating: extend or create?" above.
 
 6. **Use labels for cross-cutting concerns.** Labels like `pii`, `finance`, or `deprecated` enable filtering that cuts across folder hierarchy.
 
